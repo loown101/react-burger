@@ -1,31 +1,12 @@
 import { useState } from 'react';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { data } from '../../utils/data'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
+import IngredientsCategory from '../IngredientCategory/IngredientCategory'
+import PropTypes from 'prop-types';
+import ingredientPropType from '../../utils/prop-types'
 
-const getIngredients = (data, type) => {
-  return (
-    <ul className={`${burgerIngredientsStyles.listBox}`}>
-      {
-        data.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
-          <li className={`${burgerIngredientsStyles.item} pb-8`} key={ingredient.id}>
-            <img src={ingredient.image} alt="" />
-            <div className={`${burgerIngredientsStyles.itemBox} text text_type_digits-default`}>
-              <p className={`${burgerIngredientsStyles.itemPrice} pt-1 pb-1 pr-2`}>{ingredient.price}</p>
-              <CurrencyIcon type="primary" />
-            </div>
-            <p className={`text text_type_main-default`}>{ingredient.name}</p>
-            <div className={`${burgerIngredientsStyles.count}`}>
-              <Counter count={1} size="default" />
-            </div>
-          </li>
-        ))
-      }
-    </ul>
-  )
-}
 
-const BurgerIngredients = () => {
+const BurgerIngredients = (props) => {
   const [current, setCurrent] = useState('bun');
 
   return (
@@ -44,23 +25,18 @@ const BurgerIngredients = () => {
           </Tab>
         </div>
         <ul className={`${burgerIngredientsStyles.list}`}>
-          <li>
-            <h2 className={`${burgerIngredientsStyles.heading} text text_type_main-medium pb-6 pt-10`}>Булки</h2>
-            {getIngredients(data, 'bun')}
-          </li>
-          <li>
-            <h2 className={`${burgerIngredientsStyles.heading} text text_type_main-medium pb-6 pt-10`}>Соусы</h2>
-            {getIngredients(data, 'sauce')}
-          </li>
-          <li>
-            <h2 className={`${burgerIngredientsStyles.heading} text text_type_main-medium pb-6 pt-10`}>Начинки</h2>
-            {getIngredients(data, 'main')}
-          </li>
+          <IngredientsCategory data={props.data} type="bun" name="Булки" id="1" />
+          <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="2" />
+          <IngredientsCategory data={props.data} type="main" name="Начинка" id="3" />
         </ul>
       </section>
     </>
 
   );
+};
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export default BurgerIngredients;

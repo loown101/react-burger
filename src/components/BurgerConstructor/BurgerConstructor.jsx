@@ -1,24 +1,25 @@
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { data } from '../../utils/data'
 import burgerConstructorStyles from './BurgerConstructor.module.css';
+import PropTypes from 'prop-types';
+import ingredientPropType from '../../utils/prop-types'
 
-const BurgerConstructor = ({ props }) => {
+const BurgerConstructor = (props) => {
   return (
     <section className={`${burgerConstructorStyles.burgerConstructor} mt-25`} >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={data[0].name}
+          text={props.data[0].name}
           price={200}
-          thumbnail={data[0].image}
+          thumbnail={props.data[0].image}
         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} `}>
         <ul className={`${burgerConstructorStyles.list} `}>
           {
-            data.filter((ingredient) => (ingredient.type !== 'bun')).map((ingredient) => (
-              <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={ingredient.id}>
+            props.data.filter((ingredient) => (ingredient.type !== 'bun')).map((ingredient) => (
+              <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={ingredient._id}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   isLocked={false}
@@ -35,9 +36,9 @@ const BurgerConstructor = ({ props }) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={data[0].name}
+          text={props.data[0].name}
           price={200}
-          thumbnail={data[0].image}
+          thumbnail={props.data[0].image}
         />
       </div>
       <div className={`${burgerConstructorStyles.totalBox} pt-10`}>
@@ -51,6 +52,10 @@ const BurgerConstructor = ({ props }) => {
       </div>
     </section >
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export default BurgerConstructor;
