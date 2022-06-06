@@ -28,7 +28,7 @@ const getIngredients = (data, type) => {
 const IngredientsCategory = (props) => {
   return (
     <li key={props._id}>
-      <h2 className={`${IngredientCategoryStyles.heading} text text_type_main-medium pb-6 pt-10`}>props.name</h2>
+      <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
       {getIngredients(props.data, props.type)}
     </li>
   )
