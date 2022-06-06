@@ -18,8 +18,8 @@ const BurgerConstructor = (props) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} `}>
         <ul className={`${burgerConstructorStyles.list} `}>
           {
-            props.data.filter((ingredient) => (ingredient.type !== 'bun')).map((ingredient) => (
-              <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={ingredient._id}>
+            props.data.filter((ingredient) => (ingredient.type !== 'bun')).map((ingredient, index) => (
+              <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={index}>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   isLocked={false}
@@ -46,7 +46,7 @@ const BurgerConstructor = (props) => {
           <p className='text text_type_digits-medium pr-2'>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">
+        <Button onClick={props.openModal} type="primary" size="large">
           Оформить заказ
         </Button>
       </div>
@@ -54,8 +54,8 @@ const BurgerConstructor = (props) => {
   );
 };
 
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
+// BurgerConstructor.propTypes = {
+//   data: PropTypes.arrayOf(ingredientPropType).isRequired,
+// };
 
 export default BurgerConstructor;

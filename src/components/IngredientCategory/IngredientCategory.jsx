@@ -3,12 +3,12 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import PropTypes from 'prop-types';
 import ingredientPropType from '../../utils/prop-types'
 
-const getIngredients = (data, type) => {
+const getIngredients = (data, type, openModal) => {
   return (
     <ul className={`${IngredientCategoryStyles.listBox}`}>
       {
         data.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
-          <li className={`${IngredientCategoryStyles.item} pb-8`} key={ingredient._id}>
+          <li className={`${IngredientCategoryStyles.item} pb-8`} key={ingredient._id} onClick={openModal}>
             <img src={ingredient.image} alt="" />
             <div className={`${IngredientCategoryStyles.itemBox} text text_type_digits-default`}>
               <p className={`${IngredientCategoryStyles.itemPrice} pt-1 pb-1 pr-2`}>{ingredient.price}</p>
@@ -29,16 +29,16 @@ const IngredientsCategory = (props) => {
   return (
     <li key={props._id}>
       <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
-      {getIngredients(props.data, props.type)}
+      {getIngredients(props.data, props.type, props.openModal)}
     </li>
   )
 }
 
-IngredientsCategory.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-  _id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
+// IngredientsCategory.propTypes = {
+//   data: PropTypes.arrayOf(ingredientPropType).isRequired,
+//   _id: PropTypes.string.isRequired,
+//   type: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+// };
 
 export default IngredientsCategory;

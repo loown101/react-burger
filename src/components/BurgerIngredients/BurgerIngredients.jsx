@@ -25,9 +25,9 @@ const BurgerIngredients = (props) => {
           </Tab>
         </div>
         <ul className={`${burgerIngredientsStyles.list}`}>
-          <IngredientsCategory data={props.data} type="bun" name="Булки" id="1" />
-          <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="2" />
-          <IngredientsCategory data={props.data} type="main" name="Начинка" id="3" />
+          <IngredientsCategory data={props.data} type="bun" name="Булки" id="1" openModal={props.openModal} />
+          <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="2" openModal={props.openModal} />
+          <IngredientsCategory data={props.data} type="main" name="Начинка" id="3" openModal={props.openModal} />
         </ul>
       </section>
     </>
@@ -35,8 +35,8 @@ const BurgerIngredients = (props) => {
   );
 };
 
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType).isRequired,
-};
+// BurgerIngredients.propTypes = {
+//   data: PropTypes.arrayOf(ingredientPropType).isRequired,
+// };
 
 export default BurgerIngredients;
