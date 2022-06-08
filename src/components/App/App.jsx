@@ -4,14 +4,17 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import Modal from '../Modal/Modal';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 
 function App() {
   const [state, setState] = React.useState({
-    ingredients: ['']
+    ingredients: []
   });
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
   const [isIngredientsDetailsOpened, setIsIngredientsDetailsOpened] = React.useState(false);
+  const [idIngredients, setIdIngredients] = React.useState();
 
   React.useEffect(() => {
     const getIngredients = async () => {
@@ -28,8 +31,9 @@ function App() {
     setIsOrderDetailsOpened(true);
   };
 
-  const openIngredientsDetails = () => {
+  const openIngredientsDetails = (e) => {
     setIsIngredientsDetailsOpened(true);
+    setIdIngredients(e.currentTarget.dataset.ingredient);
   };
 
   const closeAllModals = () => {
@@ -44,17 +48,17 @@ function App() {
   return (
     <div className={AppStyle.App}>
       <AppHeader />
-      <main className={`${AppStyle.Main} pl-5`}>
+      {(state.ingredients.length > 0) && <main className={`${AppStyle.Main} pl-5`}>
         <BurgerIngredients data={state.ingredients} openModal={openIngredientsDetails} />
         <BurgerConstructor data={state.ingredients} type="bun" openModal={openOrderDetails} />
-      </main>
+      </main>}
       {isOrderDetailsOpened &&
         <Modal
           title=""
           onOverlayClick={closeAllModals}
           onEscKeydown={handleEscKeydown}
         >
-          {/* <OrderDetails /> */}
+          <OrderDetails onCloseClick={closeAllModals} />
         </Modal>}
       {isIngredientsDetailsOpened &&
         <Modal
@@ -62,7 +66,7 @@ function App() {
           onOverlayClick={closeAllModals}
           onEscKeydown={handleEscKeydown}
         >
-          {/* <OrderDetails /> */}
+          <IngredientDetails onCloseClick={closeAllModals} data={state.ingredients} ingredient={idIngredients} />
         </Modal>}
     </div>
   );

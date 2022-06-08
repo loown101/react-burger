@@ -14,20 +14,19 @@ const BurgerIngredients = (props) => {
       <section className='mr-10'>
         <h1 className={`${burgerIngredientsStyles.heading} text text_type_main-large pt-10 pb-5`}>Соберите бургер</h1>
         <div style={{ display: 'flex' }}>
-          <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+          <Tab value="bun" active={current === 'bun'} onClick={(e) => { document.querySelector('#one').scrollIntoView(); setCurrent(e) }}>
             Булки
           </Tab>
-          <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+          <Tab value="sauce" active={current === 'sauce'} onClick={(e) => { document.querySelector('#two').scrollIntoView(); setCurrent(e) }}>
             Соусы
-          </Tab>
-          <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+          </Tab><Tab value="main" active={current === 'main'} onClick={(e) => { document.querySelector('#three').scrollIntoView(); setCurrent(e) }}>
             Начинки
           </Tab>
         </div>
         <ul className={`${burgerIngredientsStyles.list}`}>
-          <IngredientsCategory data={props.data} type="bun" name="Булки" id="1" openModal={props.openModal} />
-          <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="2" openModal={props.openModal} />
-          <IngredientsCategory data={props.data} type="main" name="Начинка" id="3" openModal={props.openModal} />
+          <IngredientsCategory data={props.data} type="bun" name="Булки" id="one" openModal={props.openModal} />
+          <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="two" openModal={props.openModal} />
+          <IngredientsCategory data={props.data} type="main" name="Начинка" id="three" openModal={props.openModal} />
         </ul>
       </section>
     </>
@@ -35,8 +34,8 @@ const BurgerIngredients = (props) => {
   );
 };
 
-// BurgerIngredients.propTypes = {
-//   data: PropTypes.arrayOf(ingredientPropType).isRequired,
-// };
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+};
 
 export default BurgerIngredients;
