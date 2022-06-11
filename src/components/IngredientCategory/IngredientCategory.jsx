@@ -29,7 +29,7 @@ const IngredientsCategory = (props) => {
   }
 
   return (
-    <li key={props.id} id={props.id}>
+    <li id={props.id}>
       <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
       {getIngredients(props.data, props.type, props.openModal)}
     </li>

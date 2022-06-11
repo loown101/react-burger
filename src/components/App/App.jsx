@@ -16,12 +16,18 @@ function App() {
   const [isIngredientsDetailsOpened, setIsIngredientsDetailsOpened] = React.useState(false);
   const [idIngredients, setIdIngredients] = React.useState();
 
+  const checkResponce = (res) => {
+    return res.ok ? res.json() : Promise.reject(res);
+  }
+
   React.useEffect(() => {
     const getIngredients = async () => {
-      const res = await fetch('https://norma.nomoreparties.space/api/ingredients');
-      const data = await res.json();
-
-      setState({ ...state, ingredients: data.data });
+      return fetch(`https://norma.nomoreparties.space/api/ingredients`)
+        .then((res) => checkResponce(res))
+        .then((data) => setState({ ...state, ingredients: data.data }))
+        .catch((err) => {
+          console.log('Ошибка. Запрос не выполнен: ', err);
+        });
     }
 
     getIngredients();
@@ -41,10 +47,6 @@ function App() {
     setIsIngredientsDetailsOpened(false);
   };
 
-  const handleEscKeydown = (e) => {
-    e.key === "Escape" && closeAllModals();
-  };
-
   return (
     <div className={AppStyle.App}>
       <AppHeader />
@@ -55,18 +57,16 @@ function App() {
       {isOrderDetailsOpened &&
         <Modal
           title=""
-          onOverlayClick={closeAllModals}
-          onEscKeydown={handleEscKeydown}
+          onClose={closeAllModals}
         >
-          <OrderDetails onCloseClick={closeAllModals} />
+          <OrderDetails onClose={closeAllModals} />
         </Modal>}
       {isIngredientsDetailsOpened &&
         <Modal
           title="Детали ингредиента"
-          onOverlayClick={closeAllModals}
-          onEscKeydown={handleEscKeydown}
+          onClose={closeAllModals}
         >
-          <IngredientDetails onCloseClick={closeAllModals} data={state.ingredients} ingredient={idIngredients} />
+          <IngredientDetails onClose={closeAllModals} data={state.ingredients} ingredient={idIngredients} />
         </Modal>}
     </div>
   );

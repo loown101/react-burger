@@ -1,3 +1,7 @@
+.tabContainer {
+  display: flex;
+}
+
 .heading {
   margin: 0;
 }

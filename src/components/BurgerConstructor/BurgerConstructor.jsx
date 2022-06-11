@@ -27,32 +27,40 @@ const BurgerConstructor = (props) => {
     )
   }
 
+  const getSum = (props) => {
+    const total = props.data.reduce((acc, p) => acc + p.price * 1, 0);
+
+    return ingredientType.price * 2 + total;
+  }
+
   return (
     <section className={`${burgerConstructorStyles.burgerConstructor} mt-25`} >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
+      <div className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
         <ConstructorElement
           type="top"
           isLocked={true}
           text={ingredientType.name}
-          price={200}
+          price={ingredientType.price}
           thumbnail={ingredientType.image}
         />
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} `}>
+      <div className={`${burgerConstructorStyles.boxIngredient} `}>
         {getData(props)}
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={`${burgerConstructorStyles.boxIngredient} ml-8`}>
+      <div className={`${burgerConstructorStyles.boxIngredient} ml-8`}>
         <ConstructorElement
           type="bottom"
           isLocked={true}
           text={ingredientType.name}
-          price={200}
+          price={ingredientType.price}
           thumbnail={ingredientType.image}
         />
       </div>
       <div className={`${burgerConstructorStyles.totalBox} pt-10`}>
         <div className={`${burgerConstructorStyles.priceBox} pr-10`}>
-          <p className='text text_type_digits-medium pr-2'>610</p>
+          <p className='text text_type_digits-medium pr-2'>
+            {getSum(props)}
+          </p>
           <CurrencyIcon type="primary" />
         </div>
         <Button onClick={props.openModal} type="primary" size="large">
