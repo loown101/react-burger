@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  max-width: 480px;
+  max-height: 240px;
+
+  width: 100%;
+  height: 100%;
+}
+
+.listIngredient {
+  display: flex;
+
+  list-style: none;
+}
+
+.itemIngredient {
+  text-align: center;
+}

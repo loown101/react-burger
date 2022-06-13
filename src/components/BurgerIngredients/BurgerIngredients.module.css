@@ -1,0 +1,15 @@
+.tabContainer {
+  display: flex;
+}
+
+.heading {
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+
+  max-height: 712px;
+  overflow-y: scroll;
+}

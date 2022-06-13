@@ -1,0 +1,37 @@
+.container {
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 2;
+
+  max-width: 720px;
+  width: 100%;
+
+  background: #1C1C21;
+
+  border: 1px solid rgba(76, 76, 255, 0.2);
+
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+}
+
+.btnclose {
+  position: absolute;
+
+  top: -10px;
+  right: 0;
+
+  max-width: 24px;
+
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+}
