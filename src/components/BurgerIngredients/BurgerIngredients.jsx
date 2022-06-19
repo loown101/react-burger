@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
-import IngredientsCategory from '../IngredientCategory/IngredientCategory'
+import BurgerIngredientsContext from '../../services/burgerIngredientsContext';
+import IngredientsCategory from '../IngredientCategory/IngredientCategory';
 import PropTypes from 'prop-types';
-import ingredientPropType from '../../utils/prop-types'
+import ingredientPropType from '../../utils/prop-types';
 
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ openModal }) => {
   const [current, setCurrent] = useState('bun');
+  const ingredients = useContext(BurgerIngredientsContext);
 
   return (
     <section className='mr-10'>
@@ -23,16 +25,16 @@ const BurgerIngredients = (props) => {
         </Tab>
       </div>
       <ul className={`${burgerIngredientsStyles.list}`}>
-        <IngredientsCategory data={props.data} type="bun" name="Булки" id="one" openModal={props.openModal} />
-        <IngredientsCategory data={props.data} type="sauce" name="Соусы" id="two" openModal={props.openModal} />
-        <IngredientsCategory data={props.data} type="main" name="Начинка" id="three" openModal={props.openModal} />
+        <IngredientsCategory data={ingredients} type="bun" name="Булки" id="one" openModal={openModal} />
+        <IngredientsCategory data={ingredients} type="sauce" name="Соусы" id="two" openModal={openModal} />
+        <IngredientsCategory data={ingredients} type="main" name="Начинка" id="three" openModal={openModal} />
       </ul>
     </section>
   );
 };
 
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-};
+// BurgerIngredients.propTypes = {
+//   ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+// };
 
 export default BurgerIngredients;
