@@ -4,8 +4,6 @@ import BurgerIngredientsContext from '../../services/burgerIngredientsContext'
 import okImage from '../../images/graphics.png';
 
 const OrderDetails = ({ orderNumber }) => {
-  const ingredients = useContext(BurgerIngredientsContext);
-
   return (
     <div className={`${OrderDetailsStyles.container} mt-30 mb-30`}>
       <h4 className={`${OrderDetailsStyles.heading} text text_type_digits-large mb-8`}>{orderNumber}</h4>

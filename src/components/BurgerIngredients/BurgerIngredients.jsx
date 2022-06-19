@@ -3,9 +3,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
 import BurgerIngredientsContext from '../../services/burgerIngredientsContext';
 import IngredientsCategory from '../IngredientCategory/IngredientCategory';
-import PropTypes from 'prop-types';
-import ingredientPropType from '../../utils/prop-types';
-
 
 const BurgerIngredients = ({ openModal }) => {
   const [current, setCurrent] = useState('bun');
@@ -32,9 +29,5 @@ const BurgerIngredients = ({ openModal }) => {
     </section>
   );
 };
-
-// BurgerIngredients.propTypes = {
-//   ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-// };
 
 export default BurgerIngredients;

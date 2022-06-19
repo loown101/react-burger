@@ -4,11 +4,11 @@ import burgerConstructorStyles from './BurgerConstructor.module.css';
 import BurgerIngredientsContext from '../../services/burgerIngredientsContext'
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import PropTypes from 'prop-types';
-import ingredientPropType from '../../utils/prop-types';
+import { checkResponce } from '../../utils/utils';
 
 const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDetailsOpened }) => {
   const ingredients = useContext(BurgerIngredientsContext);
+
   const [bun, setBun] = useState(ingredients.find(ingredient => ingredient.type === type)); //setBun - когда пользователь будет выбирать булочку
   const [cart, setCart] = useState(ingredients.filter((ingredient) => (ingredient.type !== type)));
   const [modalData, setModalData] = useState(null);
@@ -30,9 +30,6 @@ const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDeta
 
   // const [cartState, cartDispatcher] = useReducer(reducer, cartInitialState, undefined);
 
-  const checkResponce = (res) => {
-    return res.ok ? res.json() : Promise.reject(res);
-  }
 
   const handleOrderClick = () => {
     const cartIngredientsId = cart.map((ingredients) => ingredients._id)
@@ -48,7 +45,7 @@ const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDeta
   };
 
   const saveOrder = (ingredients) => {
-    return fetch(`https://norma.nomoreparties.space/api/orders`, {
+    fetch(`https://norma.nomoreparties.space/api/orders`, {
       method: "POST",
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ ingredients: ingredients })
@@ -80,9 +77,8 @@ const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDeta
   }
 
   const getSum = (ingredients) => {
-    const total = ingredients.reduce((acc, p) => acc + p.price * 1, 0);
-
-    return bun.price * 2 + total;
+    const total = ingredients.reduce((acc, { price }) => acc + price, bun.price * 2);
+    return total;
   }
 
   return (
@@ -129,9 +125,5 @@ const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDeta
     </section >
   );
 };
-
-// BurgerConstructor.propTypes = {
-//   data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-// };
 
 export default BurgerConstructor;

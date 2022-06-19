@@ -6,7 +6,7 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import BurgerIngredientsContext from '../../services/burgerIngredientsContext';
-
+import { checkResponce } from '../../utils/utils';
 
 function App() {
   const [state, setState] = React.useState({
@@ -16,12 +16,8 @@ function App() {
   const [isIngredientsDetailsOpened, setIsIngredientsDetailsOpened] = React.useState(false);
   const [idIngredients, setIdIngredients] = React.useState();
 
-  const checkResponce = (res) => {
-    return res.ok ? res.json() : Promise.reject(res);
-  }
-
   const getIngredients = () => {
-    return fetch(`https://norma.nomoreparties.space/api/ingredients`)
+    fetch(`https://norma.nomoreparties.space/api/ingredients`)
       .then((res) => checkResponce(res))
       .then((data) => setState({ ...state, ingredients: data.data }))
       .catch((err) => {
@@ -32,10 +28,6 @@ function App() {
   React.useEffect(() => {
     getIngredients()
   }, []);
-
-  const openOrderDetails = () => {
-    setIsOrderDetailsOpened(true);
-  };
 
   const openIngredientsDetails = (e) => {
     setIsIngredientsDetailsOpened(true);
@@ -67,6 +59,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
