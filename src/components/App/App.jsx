@@ -4,9 +4,9 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-
+import BurgerIngredientsContext from '../../services/burgerIngredientsContext';
+import { checkResponce } from '../../utils/utils';
 
 function App() {
   const [state, setState] = React.useState({
@@ -16,26 +16,18 @@ function App() {
   const [isIngredientsDetailsOpened, setIsIngredientsDetailsOpened] = React.useState(false);
   const [idIngredients, setIdIngredients] = React.useState();
 
-  const checkResponce = (res) => {
-    return res.ok ? res.json() : Promise.reject(res);
+  const getIngredients = () => {
+    fetch(`https://norma.nomoreparties.space/api/ingredients`)
+      .then((res) => checkResponce(res))
+      .then((data) => setState({ ...state, ingredients: data.data }))
+      .catch((err) => {
+        console.log('Ошибка. Запрос не выполнен: ', err);
+      });
   }
 
   React.useEffect(() => {
-    const getIngredients = async () => {
-      return fetch(`https://norma.nomoreparties.space/api/ingredients`)
-        .then((res) => checkResponce(res))
-        .then((data) => setState({ ...state, ingredients: data.data }))
-        .catch((err) => {
-          console.log('Ошибка. Запрос не выполнен: ', err);
-        });
-    }
-
-    getIngredients();
+    getIngredients()
   }, []);
-
-  const openOrderDetails = () => {
-    setIsOrderDetailsOpened(true);
-  };
 
   const openIngredientsDetails = (e) => {
     setIsIngredientsDetailsOpened(true);
@@ -47,20 +39,16 @@ function App() {
     setIsIngredientsDetailsOpened(false);
   };
 
+
   return (
     <div className={AppStyle.App}>
       <AppHeader />
       {(state.ingredients.length > 0) && <main className={`${AppStyle.Main} pl-5`}>
-        <BurgerIngredients data={state.ingredients} openModal={openIngredientsDetails} />
-        <BurgerConstructor data={state.ingredients} type="bun" openModal={openOrderDetails} />
+        <BurgerIngredientsContext.Provider value={state.ingredients}>
+          <BurgerIngredients openModal={openIngredientsDetails} />
+          <BurgerConstructor type="bun" onClose={closeAllModals} isOrderDetailsOpened={isOrderDetailsOpened} setIsOrderDetailsOpened={setIsOrderDetailsOpened} />
+        </BurgerIngredientsContext.Provider>
       </main>}
-      {isOrderDetailsOpened &&
-        <Modal
-          title=""
-          onClose={closeAllModals}
-        >
-          <OrderDetails onClose={closeAllModals} />
-        </Modal>}
       {isIngredientsDetailsOpened &&
         <Modal
           title="Детали ингредиента"
@@ -71,6 +59,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
