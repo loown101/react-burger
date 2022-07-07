@@ -1,127 +1,151 @@
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useContext, useState, useReducer, useEffect } from 'react';
+import React, { useCallback } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import burgerConstructorStyles from './BurgerConstructor.module.css';
-import BurgerIngredientsContext from '../../services/burgerIngredientsContext'
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { checkResponce } from '../../utils/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveOrder, closeModalOrder } from '../../services/actions/constructor';
+import { useDrop } from 'react-dnd';
+import { GET_BUNS, GET_FILLING, DELETE_FILLING } from '../../services/actions/ingredient';
+import { countBuns } from '../../utils/utils';
 
-const BurgerConstructor = ({ type, onClose, isOrderDetailsOpened, setIsOrderDetailsOpened }) => {
-  const ingredients = useContext(BurgerIngredientsContext);
+const BurgerConstructor = ({ type }) => {
+  const { v4: uuidv4 } = require('uuid');
 
-  const [bun, setBun] = useState(ingredients.find(ingredient => ingredient.type === type)); //setBun - когда пользователь будет выбирать булочку
-  const [cart, setCart] = useState(ingredients.filter((ingredient) => (ingredient.type !== type)));
-  const [modalData, setModalData] = useState(null);
+  const dispatch = useDispatch();
+  const buns = useSelector(state => state.ingredient.itemsBun);
+  const fillings = useSelector(state => state.ingredient.itemsFilling);
 
-  // const reducer = (state, action) => {
-  //   switch (action.type) {
-  //     case "add":
-  //       return { ingredient: action.payload };
-  //     case "delete":
-  //       return { ingredient: action.payload };
-  //     case "reset":
-  //       return cartInitialState;
-  //     default:
-  //       throw new Error(`Wrong type of action: ${action.type}`);
-  //   }
-  // };
+  const { isOrderOpened, modalData } = useSelector(
+    state => state.constructor
+  );
 
-  // const cartInitialState = { ingredient: [] };
+  const handleOrderClick = useCallback(
+    () => {
+      const cartIngredientsId = fillings.map((ingredient) => ingredient._id)
 
-  // const [cartState, cartDispatcher] = useReducer(reducer, cartInitialState, undefined);
+      // cartIngredientsId.push(bun._id);
+      // cartIngredientsId.push(bun._id);
 
+      dispatch(saveOrder(cartIngredientsId));
+    },
+    [fillings, dispatch]
+  );
 
-  const handleOrderClick = () => {
-    const cartIngredientsId = cart.map((ingredients) => ingredients._id)
-
-    cartIngredientsId.push(bun._id);
-    cartIngredientsId.push(bun._id);
-
-    saveOrder(cartIngredientsId)
-      .then(data => {
-        setModalData(data);
-        setIsOrderDetailsOpened(true);
-      });
-  };
-
-  const saveOrder = (ingredients) => {
-    fetch(`https://norma.nomoreparties.space/api/orders`, {
-      method: "POST",
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ ingredients: ingredients })
+  const handleDeleteClick = (id) => {
+    dispatch({
+      type: DELETE_FILLING,
+      id: id,
     })
-      .then((res) => checkResponce(res))
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
-      });
   }
 
-  const getData = (ingredients) => {
+  const closeModal = useCallback(
+    () => {
+      dispatch(closeModalOrder());
+    },
+    [dispatch]
+  );
+
+  const getFillingList = (fillings) => {
     return (
       <ul className={`${burgerConstructorStyles.list} `}>
-        {
-          ingredients.map((ingredient, index) => (
-            <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                isLocked={false}
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            </li>
-          ))
+        {fillings.map((filling, index) =>
+        (
+          <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={index}>
+            <DragIcon type="primary" />
+            <ConstructorElement
+              isLocked={false}
+              text={filling.name}
+              price={filling.price}
+              thumbnail={filling.image}
+              handleClose={(() => handleDeleteClick(filling.id))}
+            />
+          </li>
+        ))
         }
       </ul>
     )
   }
 
-  const getSum = (ingredients) => {
-    const total = ingredients.reduce((acc, { price }) => acc + price, bun.price * 2);
+  const calcSum = (fillings) => {
+    if (fillings.length === 0) {
+      return 0
+    }
+    //const total = fillings.reduce((acc, { price }) => acc + price, (buns.price || 0) * countBuns);
+    const total = fillings.reduce((acc, { price }) => acc + price, 0);
     return total;
   }
 
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingridients',
+    collect: monitor => ({
+      isHover: monitor.isOver() ? 'indigo' : 'transparent',
+    }),
+    drop(item) {
+      if (item.ingredient.type === type) {
+        dispatch({
+          type: GET_BUNS,
+          itemsBun: item.ingredient,
+        });
+      } else {
+        dispatch({
+          type: GET_FILLING,
+          itemsFilling: { ...item.ingredient, id: uuidv4() },
+        });
+      }
+    },
+  });
+
   return (
     <section className={`${burgerConstructorStyles.burgerConstructor} mt-25`} >
-      <div className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={bun.name}
-          price={bun.price}
-          thumbnail={bun.image}
-        />
-      </div>
-      <div className={`${burgerConstructorStyles.boxIngredient} `}>
-        {getData(cart)}
-      </div>
-      <div className={`${burgerConstructorStyles.boxIngredient} ml-8`}>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={bun.name}
-          price={bun.price}
-          thumbnail={bun.image}
-        />
+      <div ref={dropTarget} style={{ isHover }}>
+        {(!buns) ? (<div className={`${burgerConstructorStyles.boxIngredient} ${burgerConstructorStyles.boxIngredientBuns} ml-8 pb-4 mb-4`}>Перенесите булочку</div>) :
+          (<div className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
+            <ConstructorElement
+              type={"top"}
+              isLocked={true}
+              text={buns.name}
+              price={buns.price}
+              thumbnail={buns.image}
+            />
+          </div>)}
+        {(fillings.length > 0) ? (<div className={`${burgerConstructorStyles.boxIngredient} `}>
+          {getFillingList(fillings)}
+        </div>) : (<div className={`${burgerConstructorStyles.boxIngredient} ${burgerConstructorStyles.boxIngredientFilling} ml-8 pb-4 mb-4`}>Добавьте соус или начинку</div>)}
+        {(!buns)
+          ? (<div className={`${burgerConstructorStyles.boxIngredient} ${burgerConstructorStyles.boxIngredientBuns} ${burgerConstructorStyles.boxIngredientBunsBottom} ml-8 pb-4`}>Перенесите булочку</div>)
+          : (<div className={`${burgerConstructorStyles.boxIngredient} ml-8`}>
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={buns.name}
+              price={buns.price}
+              thumbnail={buns.image}
+            />
+          </div>)
+        }
       </div>
       <div className={`${burgerConstructorStyles.totalBox} pt-10`}>
         <div className={`${burgerConstructorStyles.priceBox} pr-10`}>
           <p className='text text_type_digits-medium pr-2'>
-            {getSum(cart)}
+            {calcSum(fillings)}
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button onClick={handleOrderClick} type="primary" size="large">
+        <Button onClick={handleOrderClick} type="primary" size="large" disabled={(!buns) ? true : false}>
           Оформить заказ
         </Button>
       </div>
-      {isOrderDetailsOpened &&
+      {
+        isOrderOpened &&
         <Modal
           title=""
-          onClose={onClose}
+          onClose={closeModal}
         >
-          <OrderDetails onClose={onClose} orderNumber={modalData.order.number} />
-        </Modal>}
+          <OrderDetails onClose={closeModal} orderNumber={modalData.order.number} />
+        </Modal>
+      }
     </section >
   );
 };

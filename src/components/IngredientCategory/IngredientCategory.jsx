@@ -1,27 +1,42 @@
+import React, { useCallback } from 'react';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import ingredientPropType from '../../utils/prop-types'
-
+import Modal from '../Modal/Modal';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModalDetails, openModalDetails } from '../../services/actions/ingredient';
+import Ingredient from './Ingredient'
 
 const IngredientsCategory = (props) => {
+  const dispatch = useDispatch();
 
-  const getIngredients = (data, type, openModal) => {
+
+  const ingredients = useSelector(
+    state => state.ingredient.items
+  );
+
+  const { isIngredientsDetails, idIngredient } = useSelector(
+    state => state.ingredient
+  );
+
+  const closeModal = useCallback(
+    () => {
+      dispatch(closeModalDetails());
+    },
+    [dispatch]
+  );
+
+  const openModal = (ingredients) => {
+    dispatch(openModalDetails(ingredients));
+  }
+
+
+  const getIngredients = (type, open) => {
     return (
       <ul className={`${IngredientCategoryStyles.listBox}`}>
         {
-          data.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
-            <li className={`${IngredientCategoryStyles.item} pb-8`} key={ingredient._id} onClick={openModal} data-ingredient={ingredient._id}>
-              <img src={ingredient.image} alt={ingredient.name} />
-              <div className={`${IngredientCategoryStyles.itemBox} text text_type_digits-default`}>
-                <p className={`${IngredientCategoryStyles.itemPrice} pt-1 pb-1 pr-2`}>{ingredient.price}</p>
-                <CurrencyIcon type="primary" />
-              </div>
-              <p className={`text text_type_main-default`}>{ingredient.name}</p>
-              <div className={`${IngredientCategoryStyles.count}`}>
-                <Counter count={1} size="default" />
-              </div>
-            </li>
+          (ingredients.length > 0) && ingredients.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
+            <Ingredient ingredient={ingredient} open={open} key={ingredient._id}></Ingredient>
           ))
         }
       </ul>
@@ -29,15 +44,25 @@ const IngredientsCategory = (props) => {
   }
 
   return (
-    <li id={props.id}>
-      <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
-      {getIngredients(props.data, props.type, props.openModal)}
-    </li>
+    <>
+      <li id={props.id}>
+        <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
+        {getIngredients(props.type, openModal)}
+      </li>
+      {isIngredientsDetails &&
+        <Modal
+          title="Детали ингредиента"
+          onClose={closeModal}
+        >
+          <IngredientDetails onClose={closeModal} data={ingredients} ingredient={idIngredient} />
+        </Modal>
+      }
+    </>
+
   )
 }
 
 IngredientsCategory.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
