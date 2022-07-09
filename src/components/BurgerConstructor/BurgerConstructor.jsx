@@ -1,14 +1,16 @@
-import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 import burgerConstructorStyles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveOrder, closeModalOrder } from '../../services/actions/constructor';
 import { useDrop } from 'react-dnd';
-import { GET_BUNS, GET_FILLING, DELETE_FILLING } from '../../services/actions/ingredient';
+import { GET_BUNS, GET_FILLING, DELETE_FILLING, RESET_FILLING } from '../../services/actions/ingredient';
 import { countBuns } from '../../utils/utils';
+import BurgerConstructorOrder from './BurgerConstructorOrder/BurgerConstructorOrder';
 
 const BurgerConstructor = ({ type }) => {
   const { v4: uuidv4 } = require('uuid');
@@ -23,14 +25,21 @@ const BurgerConstructor = ({ type }) => {
 
   const handleOrderClick = useCallback(
     () => {
-      const cartIngredientsId = fillings.map((ingredient) => ingredient._id)
 
-      // cartIngredientsId.push(bun._id);
-      // cartIngredientsId.push(bun._id);
+      const cartIngredientsId = [...fillings].map((ingredient) => ingredient._id);
 
-      dispatch(saveOrder(cartIngredientsId));
+      if (buns) {
+        cartIngredientsId.push(buns._id)
+        cartIngredientsId.push(buns._id)
+      }
+
+      dispatch(saveOrder(cartIngredientsId))
+      dispatch({
+        type: RESET_FILLING,
+      })
+
     },
-    [fillings, dispatch]
+    [fillings, buns, dispatch]
   );
 
   const handleDeleteClick = (id) => {
@@ -52,16 +61,13 @@ const BurgerConstructor = ({ type }) => {
       <ul className={`${burgerConstructorStyles.list} `}>
         {fillings.map((filling, index) =>
         (
-          <li className={`${burgerConstructorStyles.item} pb-4 pr-2`} key={index}>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              isLocked={false}
-              text={filling.name}
-              price={filling.price}
-              thumbnail={filling.image}
-              handleClose={(() => handleDeleteClick(filling.id))}
-            />
-          </li>
+          <BurgerConstructorOrder
+            key={filling.id}
+            id={filling.id}
+            index={index}
+            filling={filling}
+            handleDeleteClick={handleDeleteClick}
+          />
         ))
         }
       </ul>
@@ -69,16 +75,12 @@ const BurgerConstructor = ({ type }) => {
   }
 
   const calcSum = (fillings) => {
-    if (fillings.length === 0) {
-      return 0
-    }
-    //const total = fillings.reduce((acc, { price }) => acc + price, (buns.price || 0) * countBuns);
-    const total = fillings.reduce((acc, { price }) => acc + price, 0);
+    let total = fillings.reduce((acc, { price }) => acc + price, ((!buns) ? 0 : buns.price) * countBuns);
     return total;
   }
 
   const [{ isHover }, dropTarget] = useDrop({
-    accept: 'ingridients',
+    accept: 'newIngridient',
     collect: monitor => ({
       isHover: monitor.isOver() ? 'indigo' : 'transparent',
     }),
@@ -148,6 +150,10 @@ const BurgerConstructor = ({ type }) => {
       }
     </section >
   );
+};
+
+BurgerConstructor.propTypes = {
+  type: PropTypes.string.isRequired,
 };
 
 export default BurgerConstructor;

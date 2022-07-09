@@ -58,11 +58,6 @@
   overflow-y: scroll;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-}
-
 .totalBox {
   display: flex;
   justify-content: flex-end;

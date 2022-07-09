@@ -6,10 +6,13 @@ export const GET_ITEMS_FAILED = 'GET_ITEMS_FAILED';
 
 export const GET_BUNS = 'GET_BUNS';
 export const GET_FILLING = 'GET_FILLING';
+export const REORDER_FILLING = 'REORDER_FILLING';
 export const DELETE_FILLING = 'DELETE_FILLING';
+export const RESET_FILLING = 'RESET_FILLING';
 
 export const CLOSE_MODAL_DETAILS = 'CLOSE_MODAL_DETAILS';
 export const OPEN_MODAL_DETAILS = 'OPEN_MODAL_DETAILS';
+
 
 export function getIngredients() {
   return function (dispatch) {

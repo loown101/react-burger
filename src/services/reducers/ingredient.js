@@ -6,6 +6,8 @@ import {
   CLOSE_MODAL_DETAILS,
   GET_BUNS,
   GET_FILLING,
+  REORDER_FILLING,
+  RESET_FILLING,
   DELETE_FILLING
 } from '../actions/ingredient';
 
@@ -16,6 +18,8 @@ const initialState = {
 
   isIngredientsDetails: false,
   idIngredient: '',
+
+  itemsFilling: [],
 };
 
 export const ingredientReducer = (state = initialState, action) => {
@@ -32,6 +36,7 @@ export const ingredientReducer = (state = initialState, action) => {
         itemsFailed: false,
         items: action.items,
         itemsFilling: [],
+
         itemsRequest: false
       };
     }
@@ -62,6 +67,22 @@ export const ingredientReducer = (state = initialState, action) => {
             return item.id !== action.id;
           }
         ),
+      };
+    }
+    case REORDER_FILLING: {
+      const fillings = [...state.itemsFilling]
+      fillings.splice(action.index.dragIndex, 0, fillings.splice(action.index.hoverIndex, 1)[0])
+
+      return {
+        ...state,
+        itemsFilling: fillings,
+      };
+    }
+    case RESET_FILLING: {
+      return {
+        ...state,
+        itemsBun: null,
+        itemsFilling: [],
       };
     }
     case OPEN_MODAL_DETAILS: {

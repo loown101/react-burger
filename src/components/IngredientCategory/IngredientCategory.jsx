@@ -5,7 +5,7 @@ import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModalDetails, openModalDetails } from '../../services/actions/ingredient';
-import Ingredient from './Ingredient'
+import IngredientCategoryItem from './IngredientCategoryItem/IngredientCategoryItem'
 
 const IngredientsCategory = (props) => {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const IngredientsCategory = (props) => {
       <ul className={`${IngredientCategoryStyles.listBox}`}>
         {
           (ingredients.length > 0) && ingredients.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
-            <Ingredient ingredient={ingredient} open={open} key={ingredient._id}></Ingredient>
+            <IngredientCategoryItem ingredient={ingredient} open={open} key={ingredient._id}></IngredientCategoryItem>
           ))
         }
       </ul>
