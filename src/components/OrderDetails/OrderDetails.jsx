@@ -1,6 +1,5 @@
-import { useContext } from 'react';
+import React from 'react';
 import OrderDetailsStyles from './OrderDetails.module.css';
-import BurgerIngredientsContext from '../../services/burgerIngredientsContext'
 import okImage from '../../images/graphics.png';
 
 const OrderDetails = ({ orderNumber }) => {
