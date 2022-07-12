@@ -23,14 +23,12 @@ export function saveOrder(data) {
             type: POST_ITEMS_SUCCESS,
             items: res
           });
-        } else {
-          dispatch({
-            type: POST_ITEMS_FAILED
-          });
         }
       })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
+      .catch(() => {
+        dispatch({
+          type: POST_ITEMS_FAILED
+        });
       });
   };
 }
