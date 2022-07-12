@@ -27,14 +27,12 @@ export function getIngredients() {
             type: GET_ITEMS_SUCCESS,
             items: res.data
           });
-        } else {
-          dispatch({
-            type: GET_ITEMS_FAILED
-          });
         }
       })
-      .catch((err) => {
-        console.log('Ошибка. Запрос не выполнен: ', err);
+      .catch(() => {
+        dispatch({
+          type: GET_ITEMS_FAILED
+        });
       });
   };
 }
