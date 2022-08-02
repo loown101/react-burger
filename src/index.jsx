@@ -28,13 +28,11 @@ const store = createStore(rootReducer, enhancer);
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
-        <App />
-      </DndProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>
+  </Provider>
 );
 
 reportWebVitals();

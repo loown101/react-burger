@@ -1,13 +1,23 @@
 import React from 'react';
-import AppStyle from './App.module.css'
+import { useDispatch } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AppStyle from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredient';
+import {
+  ForgotPasswordPage,
+  HomePage,
+  IngredientsPage,
+  LoginPage,
+  OrderFeedPage,
+  OrderHistoryPage,
+  ProfilePage,
+  RegisterPage,
+  ResetPasswordPage,
+  NotFound404
+} from '../../pages';
 
 function App() {
-  const ingredients = useSelector(state => state.ingredient.items);
   const dispatch = useDispatch();
 
   React.useEffect(
@@ -18,13 +28,43 @@ function App() {
   );
 
   return (
-    <div className={AppStyle.App}>
-      <AppHeader />
-      {(ingredients.length > 0) && <main className={`${AppStyle.Main} pl-5`}>
-        <BurgerIngredients />
-        <BurgerConstructor type="bun" />
-      </main>}
-    </div>
+    <Router>
+      <div className={AppStyle.app}>
+        <AppHeader />
+        <Switch>
+          <Route path='/' exact>
+            <HomePage />
+          </Route>
+          <Route path='/forgot-password' exact>
+            <ForgotPasswordPage />
+          </Route>
+          <Route path='/ingredients/:id' exact={true}>
+            <IngredientsPage />
+          </Route>
+          <Route path='/login' exact>
+            <LoginPage />
+          </Route>
+          <Route path='/profile/order-feed' exact={true}> {/* исправить маршрут */}
+            <OrderFeedPage />
+          </Route>
+          <Route path='/profile/order-history' exact={true}> {/* исправить маршрут */}
+            <OrderHistoryPage />
+          </Route>
+          <Route path='/register' exact>
+            <RegisterPage />
+          </Route>
+          <Route path='/profile' exact={true}>
+            <ProfilePage />
+          </Route>
+          <Route path='/reset-password' exact={true}>
+            <ResetPasswordPage />
+          </Route>
+          <Route path='*' >
+            <NotFound404 />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

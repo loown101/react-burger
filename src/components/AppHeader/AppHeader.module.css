@@ -29,6 +29,10 @@
   display: flex;
 }
 
+.navlink {
+  text-decoration: none;
+}
+
 .profile {
   display: flex;
 
