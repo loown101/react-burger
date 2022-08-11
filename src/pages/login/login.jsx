@@ -1,16 +1,24 @@
 import React from 'react';
 import { Button, PasswordInput, Input, } from '@ya.praktikum/react-developer-burger-ui-components';
 import LoginStyle from './login.module.css'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../services/actions/auth'
 
 function LoginPage() {
-  const [value, setValue] = React.useState('password')
+  const [valuePassword, setValuePassword] = React.useState('');
+  const [valueEmail, setValueEmail] = React.useState('');
+
+  const dispatch = useDispatch();
+
+  const { user } = useSelector(
+    state => state.user
+  )
 
   const onChange = e => {
-    setValue(e.target.value)
+    setValuePassword(e.target.value)
   }
 
-  const [valueEmail, setValueEmail] = React.useState('e-mail')
   const inputRef = React.useRef(null)
 
   const onIconClick = () => {
@@ -18,12 +26,31 @@ function LoginPage() {
     alert('Icon Click Callback')
   }
 
-  console.log('Логин')
+  const submitForm = (e) => {
+    e.preventDefault()
+
+    dispatch(login(valueEmail, valuePassword))
+  }
+
+  // let location = useLocation();
+
+  // React.useEffect(() => {
+  //   ga('send', 'pageview');
+  // }, [location]);
+
+
+  // if (user.user) {
+  //   return (
+  //     <Redirect
+  //       to={state?.from || '/home'}
+  //     />
+  //   );
+  // } видос Макса
 
   return (
     <>
       <form action="" className={`${LoginStyle.form}`}>
-        <h2 className={`${LoginStyle.header} mb-6 text text_type_main-medium`}>Войти</h2>
+        <h2 className={`${LoginStyle.header} mb-6 text text_type_main-medium`} onSubmit={(e) => { submitForm(e) }}>Войти</h2>
         <div className={`${LoginStyle.input} mb-6 text text_type_main-small`}>
           <Input
             type={'email'}
@@ -39,7 +66,7 @@ function LoginPage() {
           />
         </div>
         <div className={`${LoginStyle.input} mb-6 text text_type_main-small`}>
-          <PasswordInput onChange={onChange} value={value} name={'password'} />
+          <PasswordInput onChange={onChange} value={valuePassword} name={'password'} />
         </div>
         <Button>Войти</Button>
 

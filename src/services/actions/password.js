@@ -1,23 +1,26 @@
 import { checkResponce, url } from '../../utils/utils'
 
-export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
-export const RESET_PASSWORD = 'RESET_PASSWORD';
+export const PASSWORD_RESET_REQUEST = 'PASSWORD_RESET_REQUEST';
+export const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
+export const PASSWORD_RESET_FAILED = 'PASSWORD_RESET_FAILED';
 
-export const PASSWORD_REQUEST = 'POST_ITEMS_REQUEST';
-export const PASSWORD_SUCCESS = 'POST_ITEMS_SUCCESS';
-export const PASSWORD_FAILED = 'POST_ITEMS_FAILED';
+export const PASSWORD_FORGOT_REQUEST = 'PASSWORD_FORGOT_REQUEST';
+export const PASSWORD_FORGOT_SUCCESS = 'PASSWORD_FORGOT_SUCCESS';
+export const PASSWORD_FORGOT_FAILED = 'PASSWORD_FORGOT_FAILED';
 
-export function sendPassword() {
+export function sendPassword(email) {
+  console.log('sendPassword')
+
   return function (dispatch) {
     dispatch({
-      type: PASSWORD_REQUEST
+      type: PASSWORD_FORGOT_REQUEST
     });
-    fetch(`${url}api/password-reset`, {
+    fetch(`${url}password-reset`, {
       method: "POST",
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(
         {
-          email: ""
+          email: email,
         }
       )
     })
@@ -25,30 +28,33 @@ export function sendPassword() {
       .then(res => {
         if (res && res.success) {
           dispatch({
-            type: PASSWORD_SUCCESS,
+            type: PASSWORD_FORGOT_SUCCESS,
+            message: res.message, // создать окно для оповещения пользователя
           });
         }
       })
       .catch(() => {
         dispatch({
-          type: PASSWORD_FAILED
+          type: PASSWORD_FORGOT_FAILED
         });
       });
   };
 }
 
 export function resetPassword(password, token) {
+  console.log('resetPassword')
+
   return function (dispatch) {
     dispatch({
-      type: PASSWORD_REQUEST
+      type: PASSWORD_RESET_REQUEST
     });
-    fetch(`${url}api/password-reset/reset`, {
+    fetch(`${url}password-reset/reset`, {
       method: "POST",
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(
         {
-          password: "",
-          token: ""
+          password: password,
+          token: token,
         }
       )
     })
@@ -56,13 +62,14 @@ export function resetPassword(password, token) {
       .then(res => {
         if (res && res.success) {
           dispatch({
-            type: PASSWORD_SUCCESS,
+            type: PASSWORD_RESET_SUCCESS,
+            message: res.message // создать окно для оповещения пользователя
           });
         }
       })
       .catch(() => {
         dispatch({
-          type: PASSWORD_FAILED
+          type: PASSWORD_RESET_FAILED
         });
       });
   };

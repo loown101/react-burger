@@ -2,16 +2,20 @@ import React from 'react';
 import { Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import RegisterStyle from './register.module.css';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { register } from '../../services/actions/auth'
 
 function RegisterPage() {
-  const [value, setValue] = React.useState('password')
+  const dispatch = useDispatch()
+
+  const [valuePassword, setValuePassword] = React.useState('')
 
   const onChange = e => {
-    setValue(e.target.value)
+    setValuePassword(e.target.value)
   }
 
-  const [valueName, setValueName] = React.useState('имя')
-  const [valueEmail, setValueEmail] = React.useState('e-mail')
+  const [valueName, setValueName] = React.useState('')
+  const [valueEmail, setValueEmail] = React.useState('')
   const inputRef = React.useRef(null)
 
   const onIconClick = () => {
@@ -19,9 +23,20 @@ function RegisterPage() {
     alert('Icon Click Callback')
   }
 
+  const submitForm = (e) => {
+    e.preventDefault()
+
+    console.log('value', valuePassword)
+    console.log('valueName', valueName)
+    console.log('valueEmail', valueEmail)
+
+
+    dispatch(register(valueEmail, valuePassword, valueName))
+  }
+
   return (
     <>
-      <form action="" className={`${RegisterStyle.form}`}>
+      <form action="" className={`${RegisterStyle.form}`} onSubmit={(e) => { submitForm(e) }}>
         <h2 className={`${RegisterStyle.header} mb-6 text text_type_main-medium`}>Регистрация</h2>
         <div className={`${RegisterStyle.input} mb-6 text text_type_main-small`}>
           <Input
@@ -52,7 +67,7 @@ function RegisterPage() {
           />
         </div>
         <div className={`${RegisterStyle.input} mb-6 text text_type_main-small`}>
-          <PasswordInput onChange={onChange} value={value} name={'password'} />
+          <PasswordInput onChange={onChange} value={valuePassword} name={'password'} />
         </div>
         <Button>Зарегистрироваться</Button>
 
