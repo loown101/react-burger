@@ -2,7 +2,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export function ProtectedRoute({ children, ...rest }) {
-  const { user } = useSelector(
+  const user = useSelector(
     state => state.user
   )
 

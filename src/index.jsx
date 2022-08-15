@@ -11,6 +11,7 @@ import { userReducer } from './services/reducers/auth';
 import { passwordReducer } from './services/reducers/password';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -34,7 +35,9 @@ const root = createRoot(container);
 root.render(
   <Provider store={store}>
     <DndProvider backend={HTML5Backend}>
-      <App />
+      <Router>
+        <App />
+      </Router >
     </DndProvider>
   </Provider>
 );

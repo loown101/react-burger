@@ -29,6 +29,9 @@ import {
 const initialState = {
   user: null,
   token: null,
+
+  isToken: false,
+
   userRequest: false,
   userFailed: false,
 };
@@ -44,6 +47,8 @@ export const userReducer = (state = initialState, action) => {
     case REGISTER_SUCCESS: {
       return {
         ...state,
+
+        user: action.user,
 
         userFailed: false,
         userRequest: false
@@ -86,12 +91,18 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
 
+        user: null,
+
         userRequest: true
       };
     }
     case LOGOUT_SUCCESS: {
       return {
         ...state,
+
+        user: action.user,
+
+        isToken: false,
 
         userFailed: false,
         userRequest: false
@@ -115,6 +126,8 @@ export const userReducer = (state = initialState, action) => {
     case TOKEN_SUCCESS: {
       return {
         ...state,
+
+        isToken: true,
 
         userFailed: false,
         userRequest: false

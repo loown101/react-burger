@@ -1,5 +1,5 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './BurgerConstructor.module.css';
@@ -11,11 +11,16 @@ import { useDrop } from 'react-dnd';
 import { GET_BUNS, GET_FILLING, DELETE_FILLING, RESET_FILLING } from '../../services/actions/ingredient';
 import { countBuns } from '../../utils/utils';
 import BurgerConstructorOrder from './BurgerConstructorOrder/BurgerConstructorOrder';
+import { useLocation, Redirect } from 'react-router-dom';
 
 const BurgerConstructor = ({ type }) => {
   const { v4: uuidv4 } = require('uuid');
 
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const [orderState, setOrderState] = useState(false)
+
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
 
@@ -23,8 +28,21 @@ const BurgerConstructor = ({ type }) => {
     state => state.constructor
   );
 
+  const user = useSelector(
+    state => {
+      return state.user
+    }
+  )
+
+
+
   const handleOrderClick = useCallback(
     () => {
+      if (!user.user) {
+        setOrderState(true)
+
+        return;
+      }
 
       const cartIngredientsId = [...fillings].map((ingredient) => ingredient._id);
 
@@ -147,6 +165,11 @@ const BurgerConstructor = ({ type }) => {
         >
           <OrderDetails onClose={closeModal} orderNumber={modalData.order.number} />
         </Modal>
+      }
+      {orderState &&
+        < Redirect
+          to={location.state?.from || '/login'}
+        />
       }
     </section >
   );

@@ -1,11 +1,22 @@
 import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileStyle from './profile.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { logout, editUser } from '../../services/actions/auth'
+import { useDispatch, useSelector } from 'react-redux';
 
 function ProfilePage() {
-  const [valueEmail, setValueEmail] = React.useState('e-mail')
-  const [valueName, setValueName] = React.useState('имя')
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const user = useSelector(
+    state => {
+      return state.user.user
+    }
+  )
+
+  const [valueEmail, setValueEmail] = React.useState(user.email)
+  const [valueName, setValueName] = React.useState(user.name)
   const [valuePassword, setValuePassword] = React.useState('')
   const [disabledPassword, setDisabledPassword] = React.useState(false)
   const [disabledName, setDisabledName] = React.useState(false)
@@ -18,6 +29,41 @@ function ProfilePage() {
     setDisabledPassword(!disabledPassword)
   }
 
+  const logoutProfile = (e) => {
+    e.preventDefault()
+
+    dispatch(logout())
+
+    history.replace({
+      pathname: "/",
+      state: {
+        from: {
+          pathname: "/",
+        },
+      },
+    });
+  }
+
+  const saveProfile = (e) => {
+    e.preventDefault()
+
+    dispatch(editUser(valueName, valueEmail, valuePassword))
+    setDisabledPassword(false);
+    setDisabledName(false);
+    setDisabledEmail(false);
+  }
+
+  const resetForm = (e) => {
+    e.preventDefault()
+
+    setValueEmail(user.email);
+    setValueName(user.name);
+    setValuePassword('');
+    setDisabledPassword(false);
+    setDisabledName(false);
+    setDisabledEmail(false);
+  }
+
   return (
     <>
       <section className={`${ProfileStyle.container} mt-20`}>
@@ -25,7 +71,7 @@ function ProfilePage() {
           <ul className={`${ProfileStyle.list}`}>
             <li className={`mb-8`}><Link to='/profile' className={`${ProfileStyle.link} ${ProfileStyle.linkActive} text text_type_main-medium`}>Профиль</Link></li>
             <li className={`mb-8`}><Link to='/profile/order-history' className={`${ProfileStyle.link} text text_type_main-medium`}>История заказов</Link></li>
-            <li className={`mb-20`}><Link to='/' className={`${ProfileStyle.link} text text_type_main-medium`}>Выход</Link></li>
+            <li className={`mb-20`}><Link to='/' className={`${ProfileStyle.link} text text_type_main-medium`} onClick={logoutProfile}>Выход</Link></li>
           </ul>
           <p className={`${ProfileStyle.text} text text_type_main-default text_color_inactive`}>В этом разделе вы можете изменить свои персональные данные</p>
         </div>
@@ -65,7 +111,7 @@ function ProfilePage() {
           <div className={`${ProfileStyle.input} mb-6`}>
             <Input
               type={'password'}
-              placeholder={'Укажите e-mail'}
+              placeholder={'Пароль'}
               onChange={e => setValuePassword(e.target.value)}
               value={valuePassword}
               name={'password'}
@@ -79,8 +125,8 @@ function ProfilePage() {
             />
           </div>
           <div className={`${ProfileStyle.containerButton}`}>
-            <Button>Сброс</Button>
-            <Button>Сохранить</Button>
+            <Button onClick={(e) => { resetForm(e) }}>Сброс</Button>
+            <Button onClick={(e) => { saveProfile(e) }}>Сохранить</Button>
           </div>
         </form>
       </section>

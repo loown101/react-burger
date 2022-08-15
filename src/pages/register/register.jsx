@@ -2,11 +2,19 @@ import React from 'react';
 import { Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import RegisterStyle from './register.module.css';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../services/actions/auth'
+import { useLocation, Redirect } from 'react-router-dom';
 
 function RegisterPage() {
   const dispatch = useDispatch()
+  const location = useLocation();
+
+  const user = useSelector(
+    state => {
+      return state.user
+    }
+  )
 
   const [valuePassword, setValuePassword] = React.useState('')
 
@@ -26,12 +34,16 @@ function RegisterPage() {
   const submitForm = (e) => {
     e.preventDefault()
 
-    console.log('value', valuePassword)
-    console.log('valueName', valueName)
-    console.log('valueEmail', valueEmail)
-
-
     dispatch(register(valueEmail, valuePassword, valueName))
+  }
+
+
+  if (user.user) {
+    return (
+      <Redirect
+        to={location.state?.from || '/'}
+      />
+    );
   }
 
   return (

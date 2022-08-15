@@ -10,8 +10,13 @@ import {
 
 const initialState = {
   password: null,
+  message: null,
+
   passwordRequest: false,
   passwordFailed: false,
+
+  isForgot: false,
+  isReset: false,
 };
 
 export const passwordReducer = (state = initialState, action) => {
@@ -19,42 +24,61 @@ export const passwordReducer = (state = initialState, action) => {
     case PASSWORD_RESET_REQUEST: {
       return {
         ...state,
-        passwordRequest: true
+
+        passwordRequest: true,
+        isReset: false,
       };
     }
     case PASSWORD_RESET_SUCCESS: {
       return {
         ...state,
+
+        message: action.message,
+
         passwordFailed: false,
         password: action.items,
 
-        itemsRequest: false
+        itemsRequest: false,
+        isReset: true,
       };
     }
     case PASSWORD_RESET_FAILED: {
       return {
         ...state,
+
         passwordFailed: true,
-        passwordRequest: false
+        passwordRequest: false,
+        isReset: false,
       };
     }
     case PASSWORD_FORGOT_REQUEST: {
       return {
         ...state,
-        passwordRequest: true
+
+        passwordRequest: true,
+
+        isForgot: false,
       };
     }
     case PASSWORD_FORGOT_SUCCESS: {
       return {
         ...state,
-        //редирект
+
+        message: action.message,
+
+        passwordRequest: true,
+
+        isForgot: true,
       };
     }
     case PASSWORD_FORGOT_FAILED: {
       return {
         ...state,
+
         passwordFailed: true,
-        passwordRequest: false
+        passwordRequest: false,
+
+        isForgot: false,
       };
     }
     default: {

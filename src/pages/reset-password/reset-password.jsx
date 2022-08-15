@@ -1,10 +1,21 @@
 import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ResetPasswordStyle from './reset-password.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPassword } from '../../services/actions/password'
 
 function ResetPasswordPage() {
-  const [valuePassword, setValuePassword] = React.useState('password')
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const password = useSelector(
+    state => {
+      return state.password
+    }
+  )
+
+  const [valuePassword, setValuePassword] = React.useState('')
   const [valueCode, setValueCode] = React.useState('')
   const inputRef = React.useRef(null)
 
@@ -13,9 +24,23 @@ function ResetPasswordPage() {
     alert('Icon Click Callback')
   }
 
+  const sendForm = (e) => {
+    e.preventDefault()
+
+    dispatch(resetPassword(valuePassword, valueCode))
+  }
+
+  if (password.isReset) {
+    return (
+      <Redirect
+        to={location.state?.from || '/login'}
+      />
+    );
+  }
+
   return (
     <>
-      <form action="" className={`${ResetPasswordStyle.form}`}>
+      <form action="" className={`${ResetPasswordStyle.form}`} onSubmit={(e) => { sendForm(e) }}>
         <h2 className={`${ResetPasswordStyle.header} mb-6 text text_type_main-medium`}>Восстановление пароля</h2>
         <div className={`${ResetPasswordStyle.input} mb-6 text text_type_main-small`}>
           <Input

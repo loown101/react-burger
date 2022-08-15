@@ -1,22 +1,47 @@
 import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ForgotPasswordStyle from './forgot-password.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotPassword } from '../../services/actions/password'
 
 
 function ForgotPasswordPage() {
-  const [valueEmail, setValueEmail] = React.useState('e-mail')
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const password = useSelector(
+    state => {
+      return state.password
+    }
+  )
+
+
+  const [valueEmail, setValueEmail] = React.useState('')
   const inputRef = React.useRef(null)
 
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
   }
 
+  const saveProfile = (e) => {
+    e.preventDefault()
+
+    dispatch(forgotPassword(valueEmail))
+  }
+
+  if (password.isForgot) {
+    return (
+      <Redirect
+        to={location.state?.from || '/reset-password'}
+      />
+    );
+  }
 
 
   return (
     <>
-      <form action="" className={`${ForgotPasswordStyle.form}`}>
+      <form action="" className={`${ForgotPasswordStyle.form}`} onSubmit={(e) => { saveProfile(e) }}>
         <h2 className={`${ForgotPasswordStyle.header} mb-6 text text_type_main-medium`}>Восстановление пароля</h2>
         <div className={`${ForgotPasswordStyle.input} mb-6 text text_type_main-small`}>
           <Input

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, PasswordInput, Input, } from '@ya.praktikum/react-developer-burger-ui-components';
 import LoginStyle from './login.module.css'
-import { Link, useLocation, Redirect } from 'react-router-dom';
+import { Link, useLocation, Redirect, useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/actions/auth'
 
@@ -10,9 +10,12 @@ function LoginPage() {
   const [valueEmail, setValueEmail] = React.useState('');
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  const { user } = useSelector(
-    state => state.user
+  const user = useSelector(
+    state => {
+      return state.user
+    }
   )
 
   const onChange = e => {
@@ -32,25 +35,18 @@ function LoginPage() {
     dispatch(login(valueEmail, valuePassword))
   }
 
-  // let location = useLocation();
-
-  // React.useEffect(() => {
-  //   ga('send', 'pageview');
-  // }, [location]);
-
-
-  // if (user.user) {
-  //   return (
-  //     <Redirect
-  //       to={state?.from || '/home'}
-  //     />
-  //   );
-  // } видос Макса
+  if (user.user) {
+    return (
+      <Redirect
+        to={location.state?.from || '/'}
+      />
+    );
+  }
 
   return (
     <>
-      <form action="" className={`${LoginStyle.form}`}>
-        <h2 className={`${LoginStyle.header} mb-6 text text_type_main-medium`} onSubmit={(e) => { submitForm(e) }}>Войти</h2>
+      <form action="" className={`${LoginStyle.form}`} onSubmit={(e) => { submitForm(e) }}>
+        <h2 className={`${LoginStyle.header} mb-6 text text_type_main-medium`}>Войти</h2>
         <div className={`${LoginStyle.input} mb-6 text text_type_main-small`}>
           <Input
             type={'email'}

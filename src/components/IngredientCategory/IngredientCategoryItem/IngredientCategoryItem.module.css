@@ -1,3 +1,13 @@
+.link {
+  text-decoration: none;
+  color: #8585AD;
+}
+
+.link:hover {
+  color: #8585AD;
+}
+
+
 .item {
   position: relative;
 

@@ -31,8 +31,6 @@ export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const EDIT_USER_FAILED = 'EDIT_USER_FAILED';
 
 export function register(email, password, name) {
-  console.log('register', `${url}auth/register`)
-
   return function (dispatch) {
     dispatch({
       type: REGISTER_REQUEST
@@ -51,25 +49,24 @@ export function register(email, password, name) {
       .then((res) => checkResponce(res))
       .then(res => {
         let authToken;
-        // Ищем интересующий нас заголовок
-        res.headers.forEach(header => {
-          if (header.indexOf('Bearer') === 0) {
-            // Отделяем схему авторизации от "полезной нагрузки токена",
-            // Стараемся экономить память в куках (доступно 4кб)
-            authToken = header.split('Bearer ')[1];
-          }
-        });
-        if (authToken) {
-          // Сохраняем токен в куку token
-          setCookie('token', authToken);
-          localStorage.setItem(res.refreshToken)
+
+        if (res.accessToken.indexOf('Bearer') === 0) {
+          authToken = res.accessToken.split('Bearer ')[1];
         }
-        return res.json();
+
+        if (authToken) {
+          setCookie('token', authToken);
+          localStorage.setItem('refreshToken', res.refreshToken)
+
+        }
+
+        return res
       })
       .then(res => {
         if (res && res.success) {
           dispatch({
             type: REGISTER_SUCCESS,
+            user: res.user,
           });
         }
       })
@@ -82,8 +79,6 @@ export function register(email, password, name) {
 }
 
 export function login(email, password) {
-
-  console.log('login')
 
   return function (dispatch) {
     dispatch({
@@ -102,20 +97,18 @@ export function login(email, password) {
       .then((res) => checkResponce(res))
       .then(res => {
         let authToken;
-        // Ищем интересующий нас заголовок
-        res.headers.forEach(header => {
-          if (header.indexOf('Bearer') === 0) {
-            // Отделяем схему авторизации от "полезной нагрузки токена",
-            // Стараемся экономить память в куках (доступно 4кб)
-            authToken = header.split('Bearer ')[1];
-          }
-        });
-        if (authToken) {
-          // Сохраняем токен в куку token
-          setCookie('token', authToken);
-          localStorage.setItem(res.refreshToken)
+
+        if (res.accessToken.indexOf('Bearer') === 0) {
+          authToken = res.accessToken.split('Bearer ')[1];
         }
-        return res.json();
+
+        if (authToken) {
+          setCookie('token', authToken);
+          localStorage.setItem('refreshToken', res.refreshToken)
+
+        }
+
+        return res
       })
       .then(res => {
         if (res && res.success) {
@@ -134,43 +127,36 @@ export function login(email, password) {
 }
 
 export function token() {
-
-  console.log('token')
-
-
   return function (dispatch) {
     dispatch({
       type: TOKEN_REQUEST
     });
+
     fetch(`${url}auth/token`, {
       method: "POST",
       headers: {
         'Content-type': 'application/json',
-        Authorization: 'Bearer ' + getCookie('token'),
       },
       body: JSON.stringify(
         {
-          token: localStorage.getItem('token') // не забыть проверить, какой токен придет (либо локалстор, либо куки, либо как-то еще)
+          token: localStorage.getItem('refreshToken')
         }
       )
     })
       .then((res) => checkResponce(res))
       .then(res => {
         let authToken;
-        // Ищем интересующий нас заголовок
-        res.headers.forEach(header => {
-          if (header.indexOf('Bearer') === 0) {
-            // Отделяем схему авторизации от "полезной нагрузки токена",
-            // Стараемся экономить память в куках (доступно 4кб)
-            authToken = header.split('Bearer ')[1];
-          }
-        });
-        if (authToken) {
-          // Сохраняем токен в куку token
-          setCookie('token', authToken);
-          localStorage.setItem(res.refreshToken)
+
+        if (res.accessToken.indexOf('Bearer') === 0) {
+          authToken = res.accessToken.split('Bearer ')[1];
         }
-        return res.json();
+
+        if (authToken) {
+          setCookie('token', authToken);
+          localStorage.setItem('refreshToken', res.refreshToken)
+        }
+
+        return res
       })
       .then(res => {
         if (res && res.success) {
@@ -183,16 +169,12 @@ export function token() {
         dispatch({
           type: TOKEN_FAILED
         });
-
-        throw new Error(err);
+        //throw new Error(err);
       });
   };
 }
 
 export function logout() {
-
-  console.log('logout')
-
   return function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST
@@ -202,19 +184,19 @@ export function logout() {
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(
         {
-          token: localStorage.getItem('token') //подправить
+          token: localStorage.getItem('refreshToken')
         }
       )
     })
       .then((res) => checkResponce(res))
       .then(res => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         deleteCookie('token');
 
         if (res && res.success) {
           dispatch({
             type: LOGOUT_SUCCESS,
-            user: null, //перенаправить на страницу главную, но через редирект
+            user: null,
           });
         }
       })
@@ -227,18 +209,26 @@ export function logout() {
 }
 
 export function getUser() {
-
-  console.log('getUser')
-
   return function (dispatch) {
     dispatch({
       type: USER_REQUEST
     });
+
+    const token = getCookie('token');
+
+    if (!token) {
+      dispatch({
+        type: USER_FAILED
+      });
+
+      return;
+    }
+
     fetch(`${url}auth/user`, {
       method: "GET",
       headers: {
         'Content-type': 'application/json',
-        Authorization: 'Bearer ' + getCookie('token'),
+        Authorization: 'Bearer ' + token,
       }
     })
       .then((res) => checkResponce(res))
@@ -258,9 +248,7 @@ export function getUser() {
   };
 }
 
-export function editUser(email, password, name) {
-
-  console.log('editUser')
+export function editUser(name, email, password) {
 
   return function (dispatch) {
     dispatch({
@@ -274,9 +262,9 @@ export function editUser(email, password, name) {
       },
       body: JSON.stringify(
         {
+          "name": name,
           "email": email,
           "password": password,
-          "name": name,
         }
       )
     })

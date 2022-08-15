@@ -4,10 +4,13 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
 
-const IngredientCategoryItem = ({ ingredient, open }) => {
+const IngredientCategoryItem = ({ ingredient }) => {
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
+
+  const location = useLocation();
 
   let counter = [...fillings];
 
@@ -28,29 +31,28 @@ const IngredientCategoryItem = ({ ingredient, open }) => {
     })
   });
 
+
   return (
-    <li className={`${IngredientCategoryItemStyles.item} pb-8`} style={{ opacity }} onClick={() => {
-      open(ingredient._id)
-    }
-    }>
-      <div ref={ref}>
-        <img src={ingredient.image} alt={ingredient.name} />
-        <div className={`${IngredientCategoryItemStyles.itemBox} text text_type_digits-default`}>
-          <p className={`${IngredientCategoryItemStyles.itemPrice} pt-1 pb-1 pr-2`}>{ingredient.price}</p>
-          <CurrencyIcon type="primary" />
+    <Link className={`${IngredientCategoryItemStyles.link}`} to={{ pathname: `/ingredients/${ingredient._id}`, state: { background: location } }}>
+      <li className={`${IngredientCategoryItemStyles.item} pb-8`} style={{ opacity }}>
+        <div ref={ref}>
+          <img src={ingredient.image} alt={ingredient.name} />
+          <div className={`${IngredientCategoryItemStyles.itemBox} text text_type_digits-default`}>
+            <p className={`${IngredientCategoryItemStyles.itemPrice} pt-1 pb-1 pr-2`}>{ingredient.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
         </div>
-      </div>
-      <p className={`text text_type_main-default`}>{ingredient.name}</p>
-      <div className={`${IngredientCategoryItemStyles.count}`}>
-        {(countIngridient.length > 0) && <Counter count={countIngridient.length} size="default" />}
-      </div>
-    </li>
+        <p className={`text text_type_main-default`}>{ingredient.name}</p>
+        <div className={`${IngredientCategoryItemStyles.count}`}>
+          {(countIngridient.length > 0) && <Counter count={countIngridient.length} size="default" />}
+        </div>
+      </li>
+    </Link>
   )
 }
 
 IngredientCategoryItem.propTypes = {
   ingredient: PropTypes.object.isRequired,
-  open: PropTypes.func.isRequired,
 };
 
 export default IngredientCategoryItem;

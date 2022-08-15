@@ -1,9 +1,10 @@
 import React from 'react';
+import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
 
 function IngredientsPage() {
   return (
     <div>
-      Страница с ингридиентами
+      <IngredientDetails />
     </div>
   )
 }

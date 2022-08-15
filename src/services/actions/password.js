@@ -8,9 +8,7 @@ export const PASSWORD_FORGOT_REQUEST = 'PASSWORD_FORGOT_REQUEST';
 export const PASSWORD_FORGOT_SUCCESS = 'PASSWORD_FORGOT_SUCCESS';
 export const PASSWORD_FORGOT_FAILED = 'PASSWORD_FORGOT_FAILED';
 
-export function sendPassword(email) {
-  console.log('sendPassword')
-
+export function forgotPassword(email) {
   return function (dispatch) {
     dispatch({
       type: PASSWORD_FORGOT_REQUEST
@@ -42,8 +40,6 @@ export function sendPassword(email) {
 }
 
 export function resetPassword(password, token) {
-  console.log('resetPassword')
-
   return function (dispatch) {
     dispatch({
       type: PASSWORD_RESET_REQUEST
