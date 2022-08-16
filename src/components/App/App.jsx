@@ -72,54 +72,52 @@ function App() {
 
 
   return (
-    <>
-      <div className={AppStyle.app}>
-        <AppHeader />
-        <Switch location={background || location}>
-          <Route path='/' exact>
-            <HomePage />
-          </Route>
-          <Route path='/forgot-password' exact>
-            <ForgotPasswordPage />
-          </Route>
+    <div className={AppStyle.app}>
+      <AppHeader />
+      <Switch location={background || location}>
+        <Route path='/' exact>
+          <HomePage />
+        </Route>
+        <Route path='/forgot-password' exact>
+          <ForgotPasswordPage />
+        </Route>
+        <Route path='/ingredients/:id' exact>
+          <IngredientsPage />
+        </Route>
+        <Route path='/login' exact>
+          <LoginPage />
+        </Route>
+        <ProtectedRoute path='/profile/order-feed' exact> {/* исправить маршрут */}
+          <OrderFeedPage />
+        </ProtectedRoute>
+        <ProtectedRoute path='/profile/order-history' exact> {/* исправить маршрут */}
+          <OrderHistoryPage />
+        </ProtectedRoute>
+        <Route path='/register' exact>
+          <RegisterPage />
+        </Route>
+        <ProtectedRoute path='/profile' exact>
+          <ProfilePage />
+        </ProtectedRoute>
+        <Route path='/reset-password' exact>
+          <ResetPasswordPage />
+        </Route>
+        <Route path='*' >
+          <NotFound404 />
+        </Route>
+      </Switch>
+      {
+        background && (
           <Route path='/ingredients/:id' exact>
-            <IngredientsPage />
+            {<Modal
+              title="Детали ингредиента"
+              onClose={onClose} >
+              <IngredientDetails />
+            </Modal>}
           </Route>
-          <Route path='/login' exact>
-            <LoginPage />
-          </Route>
-          <ProtectedRoute path='/profile/order-feed' exact> {/* исправить маршрут */}
-            <OrderFeedPage />
-          </ProtectedRoute>
-          <ProtectedRoute path='/profile/order-history' exact> {/* исправить маршрут */}
-            <OrderHistoryPage />
-          </ProtectedRoute>
-          <Route path='/register' exact>
-            <RegisterPage />
-          </Route>
-          <ProtectedRoute path='/profile' exact>
-            <ProfilePage />
-          </ProtectedRoute>
-          <Route path='/reset-password' exact>
-            <ResetPasswordPage />
-          </Route>
-          <Route path='*' >
-            <NotFound404 />
-          </Route>
-        </Switch>
-        {
-          background && (
-            <Route path='/ingredients/:id' exact>
-              {<Modal
-                title="Детали ингредиента"
-                onClose={onClose} >
-                <IngredientDetails />
-              </Modal>}
-            </Route>
-          )
-        }
-      </div>
-    </>
+        )
+      }
+    </div>
   );
 }
 

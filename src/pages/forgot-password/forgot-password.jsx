@@ -4,6 +4,8 @@ import ForgotPasswordStyle from './forgot-password.module.css';
 import { Link, useLocation, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../../services/actions/password'
+import { idText } from 'typescript';
+import userEvent from '@testing-library/user-event';
 
 
 function ForgotPasswordPage() {
@@ -13,6 +15,13 @@ function ForgotPasswordPage() {
   const password = useSelector(
     state => {
       return state.password
+    }
+  )
+
+
+  const user = useSelector(
+    state => {
+      return state.user
     }
   )
 
@@ -30,14 +39,19 @@ function ForgotPasswordPage() {
     dispatch(forgotPassword(valueEmail))
   }
 
+  if (user.user) {
+    <Redirect to="/" />
+  }
+
   if (password.isForgot) {
     return (
       <Redirect
-        to={location.state?.from || '/reset-password'}
+        to={{
+          pathname: "/reset-password",
+        }}
       />
     );
   }
-
 
   return (
     <>

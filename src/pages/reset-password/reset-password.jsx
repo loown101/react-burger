@@ -15,6 +15,12 @@ function ResetPasswordPage() {
     }
   )
 
+  const user = useSelector(
+    state => {
+      return state.user
+    }
+  )
+
   const [valuePassword, setValuePassword] = React.useState('')
   const [valueCode, setValueCode] = React.useState('')
   const inputRef = React.useRef(null)
@@ -30,10 +36,29 @@ function ResetPasswordPage() {
     dispatch(resetPassword(valuePassword, valueCode))
   }
 
-  if (password.isReset) {
+  if (user.user) {
+    <Redirect to="/" />
+  }
+
+  if (password.isForgot === false) {
+
+    console.log('isReset', password.isReset)
+
     return (
       <Redirect
-        to={location.state?.from || '/login'}
+        to={{
+          pathname: '/forgot-password'
+        }}
+      />
+    );
+  }
+
+  if (password.isReset === true) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/login'
+        }}
       />
     );
   }
