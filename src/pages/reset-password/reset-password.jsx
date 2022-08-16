@@ -41,9 +41,6 @@ function ResetPasswordPage() {
   }
 
   if (password.isForgot === false) {
-
-    console.log('isReset', password.isReset)
-
     return (
       <Redirect
         to={{
