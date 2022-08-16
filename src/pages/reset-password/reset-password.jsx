@@ -1,13 +1,12 @@
 import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ResetPasswordStyle from './reset-password.module.css';
-import { Link, useLocation, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../services/actions/password'
 
 function ResetPasswordPage() {
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const password = useSelector(
     state => {

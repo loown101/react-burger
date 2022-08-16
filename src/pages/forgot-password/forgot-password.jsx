@@ -1,16 +1,13 @@
 import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ForgotPasswordStyle from './forgot-password.module.css';
-import { Link, useLocation, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../../services/actions/password'
-import { idText } from 'typescript';
-import userEvent from '@testing-library/user-event';
 
 
 function ForgotPasswordPage() {
   const dispatch = useDispatch();
-  const location = useLocation();
 
   const password = useSelector(
     state => {
