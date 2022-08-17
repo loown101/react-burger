@@ -7,8 +7,11 @@ import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { ingredientReducer } from './services/reducers/ingredient';
 import { constructorReducer } from './services/reducers/constructor';
+import { userReducer } from './services/reducers/auth';
+import { passwordReducer } from './services/reducers/password';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -21,6 +24,8 @@ const enhancer = composeEnhancers(applyMiddleware(thunk));
 const rootReducer = combineReducers({
   ingredient: ingredientReducer,
   constructor: constructorReducer,
+  password: passwordReducer,
+  user: userReducer,
 })
 
 const store = createStore(rootReducer, enhancer);
@@ -28,13 +33,13 @@ const store = createStore(rootReducer, enhancer);
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
+  <Provider store={store}>
+    <DndProvider backend={HTML5Backend}>
+      <Router>
         <App />
-      </DndProvider>
-    </Provider>
-  </React.StrictMode>
+      </Router >
+    </DndProvider>
+  </Provider>
 );
 
 reportWebVitals();

@@ -29,6 +29,15 @@
   display: flex;
 }
 
+.navlink {
+  text-decoration: none;
+  color: #F2F2F3;
+}
+
+.navlink:hover {
+  color: rgb(213, 153, 241);
+}
+
 .profile {
   display: flex;
 
@@ -36,6 +45,12 @@
   text-decoration: none;
 
   justify-self: end;
+
+  color: #F2F2F3;
+}
+
+.profile:hover {
+  color: rgb(213, 153, 241);
 }
 
 .logo {

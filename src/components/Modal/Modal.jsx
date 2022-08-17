@@ -20,7 +20,6 @@ const Modal = ({ title, onClose, children }) => {
     };
   }, []);
 
-
   return ReactDOM.createPortal(
     <>
       <div className={`${ModalStyles.container}`}>

@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  max-width: 1280px;
+
+  margin: 0 auto;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  text-decoration: none;
+  color: #8585AD;
+}
+
+.linkActive {
+  font-weight: bold;
+  color: #F2F2F3;
+}
+
+.link:hover {
+  color: rgb(120, 75, 150);
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.input div {
+  width: 480px;
+  text-align: right;
+}
+
+.textContainer {
+  display: flex;
+}
+
+.text {
+  max-width: 320px;
+  width: 100%;
+}
+
+.containerButton {
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
+}
+
+.containerButton button {
+  margin-left: 24px;
+}

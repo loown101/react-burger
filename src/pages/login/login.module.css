@@ -1,0 +1,33 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+
+  margin: auto auto;
+}
+
+.input div {
+  width: 480px;
+  text-align: right;
+}
+
+.textContainer {
+  display: flex;
+}
+
+.text {
+  margin: 0;
+}
+
+.link {
+  color: #4C4CFF;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: rgb(120, 75, 150);
+  cursor: pointer;
+}

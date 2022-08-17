@@ -16,7 +16,6 @@ const initialState = {
   itemsRequest: false,
   itemsFailed: false,
 
-  isIngredientsDetails: false,
   idIngredient: '',
 
   itemsFilling: [],
@@ -88,14 +87,12 @@ export const ingredientReducer = (state = initialState, action) => {
     case OPEN_MODAL_DETAILS: {
       return {
         ...state,
-        isIngredientsDetails: true,
         idIngredient: action.idIngredient,
       };
     }
     case CLOSE_MODAL_DETAILS: {
       return {
         ...state,
-        isIngredientsDetails: false,
         ingredients: {},
       };
     }

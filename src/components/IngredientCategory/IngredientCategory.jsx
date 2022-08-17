@@ -1,45 +1,31 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 import PropTypes from 'prop-types';
-import Modal from '../Modal/Modal';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModalDetails, openModalDetails } from '../../services/actions/ingredient';
+import { openModalDetails } from '../../services/actions/ingredient';
 import IngredientCategoryItem from './IngredientCategoryItem/IngredientCategoryItem'
 
-const IngredientsCategory = (props) => {
-  const dispatch = useDispatch();
 
+const IngredientsCategory = (props) => {
+  // const dispatch = useDispatch();
 
   const ingredients = useSelector(
     state => state.ingredient.items
   );
 
-  const { isIngredientsDetails, idIngredient } = useSelector(
-    state => state.ingredient
-  );
+  // const openModal = (ingredients) => {
+  //   dispatch(openModalDetails(ingredients));
+  // }
 
-  const closeModal = useCallback(
-    () => {
-      dispatch(closeModalDetails());
-    },
-    [dispatch]
-  );
-
-  const openModal = (ingredients) => {
-    dispatch(openModalDetails(ingredients));
-  }
-
-
-  const getIngredients = (type, open) => {
+  const getIngredients = (type) => {
     return (
       <ul className={`${IngredientCategoryStyles.listBox}`}>
         {
           (ingredients.length > 0) && ingredients.filter((ingredient) => (ingredient.type === type)).map((ingredient) => (
-            <IngredientCategoryItem ingredient={ingredient} open={open} key={ingredient._id}></IngredientCategoryItem>
+            <IngredientCategoryItem ingredient={ingredient} key={ingredient._id} />
           ))
         }
-      </ul>
+      </ul >
     )
   }
 
@@ -47,16 +33,8 @@ const IngredientsCategory = (props) => {
     <>
       <li id={props.id}>
         <h2 className={`text text_type_main-medium pb-6 pt-10`}>{props.name}</h2>
-        {getIngredients(props.type, openModal)}
+        {getIngredients(props.type)}
       </li>
-      {isIngredientsDetails &&
-        <Modal
-          title="Детали ингредиента"
-          onClose={closeModal}
-        >
-          <IngredientDetails onClose={closeModal} data={ingredients} ingredient={idIngredient} />
-        </Modal>
-      }
     </>
 
   )
