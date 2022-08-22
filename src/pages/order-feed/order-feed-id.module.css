@@ -1,0 +1,59 @@
+.feed {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+
+
+  max-width: 640px;
+  width: 100%;
+}
+
+.feedOrder {
+  text-align: center;
+}
+
+.feedStatus {
+  color: #00CCCC;
+}
+
+.feedListContainer {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.feedList {
+  list-style: none;
+
+
+  position: relative;
+
+  list-style: none;
+  padding: 0;
+
+  height: 312px;
+  overflow-y: scroll;
+}
+
+.feedItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feedPrice {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.feedTotalContainer {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.feedTotal {
+  display: flex;
+}

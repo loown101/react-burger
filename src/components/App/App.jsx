@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import AppStyle from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
 import Modal from '../Modal/Modal';
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import OrderFeedId from '../OrderFeedId/OrderFeedId';
 import { getIngredients } from '../../services/actions/ingredient';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { closeModalDetails } from '../../services/actions/ingredient';
@@ -16,6 +17,7 @@ import {
   IngredientsPage,
   LoginPage,
   OrderFeedPage,
+  OrderFeedIdPage,
   OrderHistoryPage,
   ProfilePage,
   RegisterPage,
@@ -70,7 +72,6 @@ function App() {
 
   );
 
-
   return (
     <div className={AppStyle.app}>
       <AppHeader />
@@ -87,11 +88,17 @@ function App() {
         <Route path='/login' exact>
           <LoginPage />
         </Route>
-        <ProtectedRoute path='/profile/order-feed' exact> {/* исправить маршрут */}
+        <Route path='/feed' exact>
           <OrderFeedPage />
-        </ProtectedRoute>
-        <ProtectedRoute path='/profile/order-history' exact> {/* исправить маршрут */}
+        </Route>
+        <Route path='/feed/:id' exact>
+          <OrderFeedIdPage />
+        </Route>
+        <ProtectedRoute path='/profile/orders' exact>
           <OrderHistoryPage />
+        </ProtectedRoute>
+        <ProtectedRoute path='/profile/orders/:id' exact>
+          <OrderFeedIdPage />
         </ProtectedRoute>
         <Route path='/register' exact>
           <RegisterPage />
@@ -108,13 +115,29 @@ function App() {
       </Switch>
       {
         background && (
-          <Route path='/ingredients/:id' exact>
-            {<Modal
-              title="Детали ингредиента"
-              onClose={onClose} >
-              <IngredientDetails />
-            </Modal>}
-          </Route>
+          <>
+            <Route path='/ingredients/:id' exact>
+              {<Modal
+                title="Детали ингредиента"
+                onClose={onClose} >
+                <IngredientDetails />
+              </Modal>}
+            </Route>
+            <Route path='/feed/:id' exact>
+              {<Modal
+                title=""
+                onClose={onClose} >
+                <OrderFeedId />
+              </Modal>}
+            </Route>
+            <ProtectedRoute path='/profile/orders/:id' exact>
+              {<Modal
+                title=""
+                onClose={onClose} >
+                <OrderFeedId />
+              </Modal>}
+            </ProtectedRoute>
+          </>
         )
       }
     </div>

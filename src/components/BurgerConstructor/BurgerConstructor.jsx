@@ -34,8 +34,6 @@ const BurgerConstructor = ({ type }) => {
     }
   )
 
-
-
   const handleOrderClick = useCallback(
     () => {
       if (!user.user) {
@@ -50,6 +48,8 @@ const BurgerConstructor = ({ type }) => {
         cartIngredientsId.push(buns._id)
         cartIngredientsId.push(buns._id)
       }
+
+      console.log('cartIngredientsId', cartIngredientsId)
 
       dispatch(saveOrder(cartIngredientsId))
       dispatch({

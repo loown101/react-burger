@@ -1,4 +1,5 @@
-import { checkResponce, url } from '../../utils/utils'
+import { checkResponce, url } from '../../utils/utils';
+import { getCookie } from '../../utils/cookies';
 
 export const POST_ITEMS_REQUEST = 'POST_ITEMS_REQUEST';
 export const POST_ITEMS_SUCCESS = 'POST_ITEMS_SUCCESS';
@@ -13,7 +14,10 @@ export function saveOrder(data) {
     });
     fetch(`${url}orders`, {
       method: "POST",
-      headers: { 'Content-type': 'application/json' },
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Bearer ' + getCookie('token'),
+      },
       body: JSON.stringify({ ingredients: data })
     })
       .then((res) => checkResponce(res))
