@@ -52,6 +52,14 @@
   flex-direction: row-reverse;
 }
 
+.feedNamePrimary {
+  height: 60px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .feedImage {
   object-fit: cover;
 

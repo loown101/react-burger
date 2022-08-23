@@ -8,7 +8,7 @@ import OrderDetails from '../OrderDetails/OrderDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveOrder, closeModalOrder } from '../../services/actions/constructor';
 import { useDrop } from 'react-dnd';
-import { GET_BUNS, GET_FILLING, DELETE_FILLING, RESET_FILLING } from '../../services/actions/ingredient';
+import { GET_BUNS, GET_FILLING, DELETE_FILLING } from '../../services/actions/ingredient';
 import { countBuns } from '../../utils/utils';
 import BurgerConstructorOrder from './BurgerConstructorOrder/BurgerConstructorOrder';
 import { useLocation, Redirect } from 'react-router-dom';
@@ -24,9 +24,7 @@ const BurgerConstructor = ({ type }) => {
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
 
-  const { isOrderOpened, modalData } = useSelector(
-    state => state.constructor
-  );
+  const [modal, setModal] = useState(false)
 
   const user = useSelector(
     state => {
@@ -49,15 +47,11 @@ const BurgerConstructor = ({ type }) => {
         cartIngredientsId.push(buns._id)
       }
 
-      console.log('cartIngredientsId', cartIngredientsId)
+      setModal(true)
 
       dispatch(saveOrder(cartIngredientsId))
-      dispatch({
-        type: RESET_FILLING,
-      })
-
     },
-    [fillings, buns, dispatch]
+    [user.user, fillings, buns, dispatch]
   );
 
   const handleDeleteClick = (id) => {
@@ -70,6 +64,7 @@ const BurgerConstructor = ({ type }) => {
   const closeModal = useCallback(
     () => {
       dispatch(closeModalOrder());
+      setModal(false);
     },
     [dispatch]
   );
@@ -158,12 +153,12 @@ const BurgerConstructor = ({ type }) => {
         </Button>
       </div>
       {
-        isOrderOpened &&
+        modal &&
         <Modal
           title=""
           onClose={closeModal}
         >
-          <OrderDetails onClose={closeModal} orderNumber={modalData.order.number} />
+          <OrderDetails onClose={closeModal} />
         </Modal>
       }
       {orderState &&

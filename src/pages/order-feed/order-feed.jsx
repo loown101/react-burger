@@ -4,7 +4,8 @@ import feedStyles from './order-feed.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { WS_INIT, WS_CLOSE, WS_CLEAR_STORE } from '../../services/action-types/wsActionTypes';
-import { totalPrice } from '../../utils/utils'
+import { totalPrice } from '../../utils/utils';
+import dayjs from 'dayjs';
 
 function OrderFeedPage() {
   const location = useLocation();
@@ -15,8 +16,6 @@ function OrderFeedPage() {
   const ingredients = useSelector(
     state => state.ingredient.items
   );
-
-  console.log(orders)
 
   useEffect(() => {
     if (!orders) {
@@ -53,7 +52,7 @@ function OrderFeedPage() {
                       {order.number}
                     </p>
                     <p className="text text_type_main-default text_color_inactive">
-                      {order.updatedAt}
+                      {dayjs(order.updatedAt).toString()}
                     </p>
                   </div>
                   <h3 className={`${feedStyles.feedNamePrimary} text text_type_main-medium mb-6`}>

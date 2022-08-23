@@ -1,5 +1,6 @@
 import { checkResponce, url } from '../../utils/utils';
 import { getCookie } from '../../utils/cookies';
+import { RESET_FILLING } from '../actions/ingredient'
 
 export const POST_ITEMS_REQUEST = 'POST_ITEMS_REQUEST';
 export const POST_ITEMS_SUCCESS = 'POST_ITEMS_SUCCESS';
@@ -28,6 +29,11 @@ export function saveOrder(data) {
             items: res
           });
         }
+      })
+      .then((res) => {
+        dispatch({
+          type: RESET_FILLING,
+        })
       })
       .catch(() => {
         dispatch({

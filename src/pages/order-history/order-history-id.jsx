@@ -1,9 +1,10 @@
 import React from 'react';
-import OrderFeedId from '../../components/OrderFeedId/OrderFeedId';
+import OrderHistoryId from '../../components/OrderFeedId/OrderHistoryId';
 import { useDispatch, useSelector } from 'react-redux';
 import { WS_INIT, WS_CLOSE } from '../../services/action-types/wsActionTypes';
+import { getCookie } from '../../utils/cookies';
 
-function OrderFeedIdPage() {
+function OrderHistoryIdPage() {
   const { orders } = useSelector(state => state.ws)
   const dispatch = useDispatch();
 
@@ -11,7 +12,7 @@ function OrderFeedIdPage() {
     if (!orders) {
       dispatch({
         type: WS_INIT,
-        payload: '/all',
+        payload: `?token=${getCookie("token")}`
       })
     }
 
@@ -23,8 +24,8 @@ function OrderFeedIdPage() {
   }, [dispatch, orders])
 
   return (
-    <OrderFeedId />
+    <OrderHistoryId />
   )
 }
 
-export default OrderFeedIdPage;
+export default OrderHistoryIdPage;

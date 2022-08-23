@@ -7,6 +7,7 @@ import orderStyles from './order-history.module.css';
 import { getCookie } from '../../utils/cookies';
 import { WS_INIT, WS_CLOSE, WS_CLEAR_STORE } from '../../services/action-types/wsActionTypes';
 import { totalPrice } from '../../utils/utils';
+import dayjs from 'dayjs';
 
 function OrderHistoryPage() {
   const dispatch = useDispatch();
@@ -33,8 +34,6 @@ function OrderHistoryPage() {
   }
 
   const orders = useSelector(state => state.ws.orders)
-
-  console.log('orders', orders)
 
   React.useEffect(() => {
     if (!orders) {
@@ -78,10 +77,10 @@ function OrderHistoryPage() {
                       {order.number}
                     </p>
                     <p className="text text_type_main-default text_color_inactive">
-                      {order.updatedAt}
+                      {dayjs(order.updatedAt).toString()}
                     </p>
                   </div>
-                  <h3 className="text text_type_main-medium mb-2">
+                  <h3 className={`${orderStyles.feedNamePrimary} text text_type_main-medium mb-2`}>
                     {order.name}
                   </h3>
                   <p className={
@@ -110,7 +109,7 @@ function OrderHistoryPage() {
                   </div>
                 </li>
               </Link>
-            ))}
+            )).reverse()}
         </ul>
       </div>
     </section>

@@ -10,7 +10,6 @@ const initialState = {
   itemsRequest: false,
   itemsFailed: false,
 
-  isOrderOpened: false,
   modalData: {},
 
   cart: [],
@@ -30,7 +29,6 @@ export const constructorReducer = (state = initialState, action) => {
         itemsFailed: false,
         items: action.items,
         itemsRequest: false,
-        isOrderOpened: true,
         modalData: action.items,
       };
     }
@@ -44,7 +42,6 @@ export const constructorReducer = (state = initialState, action) => {
     case CLOSE_MODAL: {
       return {
         ...state,
-        isOrderOpened: false,
         modalData: {},
       }
     }

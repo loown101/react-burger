@@ -17,3 +17,4 @@ export const totalPrice = (orderIng, ingredients, sum = 0) => {
   for (let { price } of idOrder) sum += price;
   return sum;
 }
+

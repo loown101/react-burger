@@ -6,6 +6,7 @@ import AppHeader from '../AppHeader/AppHeader';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderFeedId from '../OrderFeedId/OrderFeedId';
+import OrderHistoryId from '../OrderFeedId/OrderHistoryId';
 import { getIngredients } from '../../services/actions/ingredient';
 import { ProtectedRoute } from '../ProtectedRoute';
 import { closeModalDetails } from '../../services/actions/ingredient';
@@ -19,6 +20,7 @@ import {
   OrderFeedPage,
   OrderFeedIdPage,
   OrderHistoryPage,
+  OrderHistoryIdPage,
   ProfilePage,
   RegisterPage,
   ResetPasswordPage,
@@ -98,7 +100,7 @@ function App() {
           <OrderHistoryPage />
         </ProtectedRoute>
         <ProtectedRoute path='/profile/orders/:id' exact>
-          <OrderFeedIdPage />
+          <OrderHistoryIdPage />
         </ProtectedRoute>
         <Route path='/register' exact>
           <RegisterPage />
@@ -134,7 +136,7 @@ function App() {
               {<Modal
                 title=""
                 onClose={onClose} >
-                <OrderFeedId />
+                <OrderHistoryId />
               </Modal>}
             </ProtectedRoute>
           </>

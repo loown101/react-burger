@@ -6,7 +6,7 @@ import feedStyles from './OrderFeedId.module.css';
 import { totalPrice } from '../../utils/utils';
 import dayjs from 'dayjs';
 
-function OrderFeedId() {
+function OrderHistoryId() {
   const ingredients = useSelector(
     state => state.ingredient.items
   );
@@ -22,7 +22,7 @@ function OrderFeedId() {
   React.useEffect(
     () => {
       if (!activeOrder) {
-        history.replace({ pathname: `/feed/${id}` })
+        history.replace({ pathname: `${id}` })
       };
     },
     [dispatch, activeOrder, history, id]
@@ -69,4 +69,4 @@ function OrderFeedId() {
   )
 }
 
-export default OrderFeedId;
+export default OrderHistoryId;

@@ -1,11 +1,17 @@
 import React from 'react';
 import OrderDetailsStyles from './OrderDetails.module.css';
 import okImage from '../../images/graphics.png';
+import { useSelector } from 'react-redux';
 
-const OrderDetails = ({ orderNumber }) => {
+const OrderDetails = () => {
+
+  const { modalData } = useSelector(
+    state => state.constructor
+  );
+
   return (
     <div className={`${OrderDetailsStyles.container} mt-30 mb-30`}>
-      <h4 className={`${OrderDetailsStyles.heading} text text_type_digits-large mb-8`}>{orderNumber}</h4>
+      <h4 className={`${OrderDetailsStyles.heading} text text_type_digits-large mb-8`}>{(!modalData?.order?.number) ? 'Ждите...' : modalData?.order?.number}</h4>
       <p className={`${OrderDetailsStyles.textCard} text text_type_main-medium mb-15`}>идентификатор заказа</p>
       <img src={okImage} alt="Заказ подтвержден" className={`${OrderDetailsStyles.okImage} mb-15`} />
       <p className={`${OrderDetailsStyles.textCard} text text_type_main-small mb-2`}>Ваш заказ начали готовить</p>
