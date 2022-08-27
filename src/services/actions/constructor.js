@@ -1,4 +1,6 @@
-import { checkResponce, url } from '../../utils/utils'
+import { checkResponce, url } from '../../utils/utils';
+import { getCookie } from '../../utils/cookies';
+import { RESET_FILLING } from '../actions/ingredient'
 
 export const POST_ITEMS_REQUEST = 'POST_ITEMS_REQUEST';
 export const POST_ITEMS_SUCCESS = 'POST_ITEMS_SUCCESS';
@@ -13,7 +15,10 @@ export function saveOrder(data) {
     });
     fetch(`${url}orders`, {
       method: "POST",
-      headers: { 'Content-type': 'application/json' },
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Bearer ' + getCookie('token'),
+      },
       body: JSON.stringify({ ingredients: data })
     })
       .then((res) => checkResponce(res))
@@ -24,6 +29,11 @@ export function saveOrder(data) {
             items: res
           });
         }
+      })
+      .then((res) => {
+        dispatch({
+          type: RESET_FILLING,
+        })
       })
       .catch(() => {
         dispatch({

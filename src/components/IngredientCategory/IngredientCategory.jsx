@@ -1,21 +1,15 @@
 import React from 'react';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { openModalDetails } from '../../services/actions/ingredient';
+import { useSelector } from 'react-redux';
 import IngredientCategoryItem from './IngredientCategoryItem/IngredientCategoryItem'
 
 
 const IngredientsCategory = (props) => {
-  // const dispatch = useDispatch();
 
   const ingredients = useSelector(
     state => state.ingredient.items
   );
-
-  // const openModal = (ingredients) => {
-  //   dispatch(openModalDetails(ingredients));
-  // }
 
   const getIngredients = (type) => {
     return (
