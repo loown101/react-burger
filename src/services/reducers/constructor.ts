@@ -3,19 +3,33 @@ import {
   POST_ITEMS_REQUEST,
   POST_ITEMS_SUCCESS,
   CLOSE_MODAL,
+  TConstructorActions
 } from '../actions/constructor';
 
-const initialState = {
+import { TOrder } from '../types/data';
+
+type TConstructorState = {
+  items: Array<TOrder>,
+
+  itemsRequest: boolean,
+  itemsFailed: boolean,
+
+  //modalData: null,
+
+  //cart: null
+}
+
+const initialState: TConstructorState = {
   items: [],
+
   itemsRequest: false,
   itemsFailed: false,
+  //modalData: null,
 
-  modalData: {},
-
-  cart: [],
+  //cart: null,
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TConstructorState => {
   switch (action.type) {
     case POST_ITEMS_REQUEST: {
       return {
@@ -29,7 +43,7 @@ export const constructorReducer = (state = initialState, action) => {
         itemsFailed: false,
         items: action.items,
         itemsRequest: false,
-        modalData: action.items,
+        //modalData: action.items,
       };
     }
     case POST_ITEMS_FAILED: {
@@ -42,7 +56,7 @@ export const constructorReducer = (state = initialState, action) => {
     case CLOSE_MODAL: {
       return {
         ...state,
-        modalData: {},
+        //modalData: null,
       }
     }
     default: {

@@ -23,10 +23,22 @@ import {
   EDIT_USER_SUCCESS,
   EDIT_USER_FAILED,
 
+  TAuthActions,
 } from '../actions/auth';
 
+import { TUser } from '../types/data';
 
-const initialState = {
+type TAuthState = {
+  user: TUser | null,
+  token: null,
+
+  isToken: boolean,
+
+  userRequest: boolean,
+  userFailed: boolean,
+};
+
+const initialState: TAuthState = {
   user: null,
   token: null,
 
@@ -36,7 +48,7 @@ const initialState = {
   userFailed: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TAuthActions): TAuthState => {
   switch (action.type) {
     case REGISTER_REQUEST: {
       return {

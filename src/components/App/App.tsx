@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import AppStyle from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader';
@@ -29,7 +29,7 @@ import {
 
 function App() {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const history = useHistory();
 
   const user = useSelector(
@@ -37,6 +37,20 @@ function App() {
       return state.user
     }
   )
+
+  type TLocation = {
+    from: string;
+    state?: object;
+    background: TBackground;
+  }
+
+  type TBackground = {
+    pathname: string;
+    search: string;
+    hash: string;
+    state: null;
+    key: string;
+  }
 
   const background = location.state?.background;
 

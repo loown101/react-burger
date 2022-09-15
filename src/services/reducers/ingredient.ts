@@ -2,26 +2,43 @@ import {
   GET_ITEMS_FAILED,
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
-  OPEN_MODAL_DETAILS,
+  //OPEN_MODAL_DETAILS,
   CLOSE_MODAL_DETAILS,
   GET_BUNS,
   GET_FILLING,
   REORDER_FILLING,
   RESET_FILLING,
-  DELETE_FILLING
+  DELETE_FILLING,
+  TIngridientActions
 } from '../actions/ingredient';
 
-const initialState = {
+import { TIngredient } from '../types/data';
+
+type TIngredientState = {
+  readonly items: Array<TIngredient>,
+  itemsBun: TIngredient | null,
+
+  itemsRequest: boolean,
+  itemsFailed: boolean,
+
+  itemsFilling: Array<TIngredient>,
+  id: string;
+}
+
+const initialState: TIngredientState = {
   items: [],
+  itemsBun: null,
+
   itemsRequest: false,
   itemsFailed: false,
 
-  idIngredient: '',
+  //idIngredient: '',
 
   itemsFilling: [],
+  id: '',
 };
 
-export const ingredientReducer = (state = initialState, action) => {
+export const ingredientReducer = (state = initialState, action: TIngridientActions): TIngredientState => {
   switch (action.type) {
     case GET_ITEMS_REQUEST: {
       return {
@@ -30,13 +47,15 @@ export const ingredientReducer = (state = initialState, action) => {
       };
     }
     case GET_ITEMS_SUCCESS: {
+      console.log('ssdfsd', action.items)
+
       return {
         ...state,
         itemsFailed: false,
         items: action.items,
         itemsFilling: [],
 
-        itemsRequest: false
+        itemsRequest: true
       };
     }
     case GET_ITEMS_FAILED: {
@@ -62,7 +81,7 @@ export const ingredientReducer = (state = initialState, action) => {
       return {
         ...state,
         itemsFilling: [...state.itemsFilling].filter(
-          (item) => {
+          (item: TIngredient) => {
             return item.id !== action.id;
           }
         ),
@@ -84,16 +103,17 @@ export const ingredientReducer = (state = initialState, action) => {
         itemsFilling: [],
       };
     }
-    case OPEN_MODAL_DETAILS: {
-      return {
-        ...state,
-        idIngredient: action.idIngredient,
-      };
-    }
+    // case OPEN_MODAL_DETAILS: {
+    //   return {
+    //     ...state,
+    //     idIngredient: action.idIngredient,
+    //   };
+    // }
     case CLOSE_MODAL_DETAILS: {
       return {
         ...state,
-        ingredients: {},
+        //ingredients: {},
+        items: [],
       };
     }
     default: {

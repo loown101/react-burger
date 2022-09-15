@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import HomeStyle from './home.module.css';
 import BurgerConstructor from '../../components/BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../../components/BurgerIngredients/BurgerIngredients';
-
 
 function HomePage() {
   const ingredients = useSelector(state => state.ingredient.items);

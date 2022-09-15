@@ -14,36 +14,22 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter as Router } from 'react-router-dom';
 import { socketMiddleware } from './services/middleware/socketMiddleware';
-import {
-  WS_INIT,
-  WS_OPEN,
-  WS_CLOSE,
-  WS_MESSAGE,
-  WS_ERROR,
-} from "./services/action-types/wsActionTypes"
+import { wsActions } from "./services/action-types/wsActionTypes";
 
-//import { connect, wsClose, wsError, wsMessage, wsOpen, wsConnecting } from "./services/actions/wsActions";
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
+  }
+}
 
-const wss = 'wss://norma.nomoreparties.space/orders'
+const wss = 'wss://norma.nomoreparties.space/orders';
 
-const wsActions = {
-  wsInit: WS_INIT,
-  onOpen: WS_OPEN,
-  onClose: WS_CLOSE,
-  onError: WS_ERROR,
-  onMessage: WS_MESSAGE,
-};
-
-const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const container = document.getElementById('root');
 const enhancer = composeEnhancers(applyMiddleware(thunk), applyMiddleware(socketMiddleware(wss, wsActions)));
-//const enhancer = composeEnhancers(applyMiddleware(thunk));
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredient: ingredientReducer,
   constructor: constructorReducer,
   password: passwordReducer,
@@ -51,9 +37,9 @@ const rootReducer = combineReducers({
   ws: wsReducer,
 })
 
-const store = createStore(rootReducer, enhancer);
+export const store = createStore(rootReducer, enhancer);
 
-const root = createRoot(container);
+export const root = createRoot(container as HTMLElement);
 
 root.render(
   <Provider store={store}>

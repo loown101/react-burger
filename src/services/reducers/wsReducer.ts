@@ -3,19 +3,31 @@ import {
   WS_CLOSE,
   WS_ERROR,
   WS_MESSAGE,
-  WS_CLEAR_STORE
+  WS_CLEAR_STORE,
+  TWsUnion
 } from "../action-types/wsActionTypes";
 
+import { TWsOrder } from '../types/data'
 
-const initialState = {
+type TWsState = {
+  orders: TWsOrder | null,
+  total: number | null,
+  totalToday: number | null,
+  //error: null,
+
+  isConnecting: boolean,
+}
+
+const initialState: TWsState = {
   orders: null,
   total: null,
   totalToday: null,
+  //error: null,
 
   isConnecting: false,
 };
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (state = initialState, action: TWsUnion): TWsState => {
   switch (action.type) {
 
     case WS_OPEN: {
@@ -28,7 +40,7 @@ export const wsReducer = (state = initialState, action) => {
     case WS_ERROR: {
       return {
         ...state,
-        erorr: action.payload,
+        //error: action.payload,
 
         isConnecting: false,
       };

@@ -5,8 +5,9 @@ import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
+//import { TIngredient } from '../../../services/types/data';
 
-const IngredientCategoryItem = ({ ingredient }) => {
+const IngredientCategoryItem = (ingredient) => {
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
 
