@@ -1,7 +1,7 @@
-import { checkResponce, url } from '../../utils/utils'
+import { checkResponse, url } from '../../utils/utils'
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookies';
 import { AppDispatch } from '../types';
-import { TUser } from '../types/data';
+import { TUser, TAuthResponse } from '../types/data';
 
 export const REGISTER_USER: 'REGISTER_USER' = 'REGISTER_USER';
 export const LOGIN_USER: 'LOGIN_USER' = 'LOGIN_USER';
@@ -165,7 +165,7 @@ export function register(email: string, password: string, name: string) {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         let authToken;
 
@@ -213,7 +213,7 @@ export function login(email: string, password: string) {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         let authToken;
 
@@ -262,7 +262,7 @@ export function token() {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         let authToken;
 
@@ -307,7 +307,7 @@ export function logout() {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         localStorage.removeItem('refreshToken');
         deleteCookie('token');
@@ -350,7 +350,7 @@ export function getUser() {
         Authorization: 'Bearer ' + token,
       }
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({
@@ -367,8 +367,7 @@ export function getUser() {
   };
 }
 
-export function editUser(name: string, email: string, password: string) {
-
+export function editUser(name: string | undefined, email: string | undefined, password: string | undefined) {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: EDIT_USER_REQUEST
@@ -387,7 +386,7 @@ export function editUser(name: string, email: string, password: string) {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TAuthResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({

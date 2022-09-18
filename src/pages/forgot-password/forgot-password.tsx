@@ -2,9 +2,8 @@ import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ForgotPasswordStyle from './forgot-password.module.css';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { forgotPassword } from '../../services/actions/password'
-
 
 function ForgotPasswordPage() {
   const dispatch = useDispatch();
@@ -15,22 +14,22 @@ function ForgotPasswordPage() {
     }
   )
 
-
   const user = useSelector(
     state => {
       return state.user
     }
   )
 
-
   const [valueEmail, setValueEmail] = React.useState('')
-  const inputRef = React.useRef(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    const current = inputRef.current as HTMLInputElement
+
+    setTimeout(() => current.focus(), 0)
   }
 
-  const saveProfile = (e) => {
+  const saveProfile = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(forgotPassword(valueEmail))

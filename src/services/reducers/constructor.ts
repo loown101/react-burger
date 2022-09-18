@@ -6,16 +6,15 @@ import {
   TConstructorActions
 } from '../actions/constructor';
 
-import { TOrder } from '../types/data';
+import { TConstructor, TOrder } from '../types/data';
 
 type TConstructorState = {
-  items: Array<TOrder>,
+  items: Array<TConstructor>,
 
   itemsRequest: boolean,
   itemsFailed: boolean,
 
-  //modalData: null,
-
+  order: TOrder | null,
   //cart: null
 }
 
@@ -24,8 +23,8 @@ const initialState: TConstructorState = {
 
   itemsRequest: false,
   itemsFailed: false,
-  //modalData: null,
 
+  order: null,
   //cart: null,
 };
 
@@ -43,7 +42,7 @@ export const constructorReducer = (state = initialState, action: TConstructorAct
         itemsFailed: false,
         items: action.items,
         itemsRequest: false,
-        //modalData: action.items,
+        order: action.order,
       };
     }
     case POST_ITEMS_FAILED: {
@@ -56,7 +55,7 @@ export const constructorReducer = (state = initialState, action: TConstructorAct
     case CLOSE_MODAL: {
       return {
         ...state,
-        //modalData: null,
+        order: null,
       }
     }
     default: {

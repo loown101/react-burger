@@ -1,7 +1,14 @@
+import { ReactNode, FC } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../services/hooks';
 
-export function ProtectedRoute({ children, ...rest }) {
+type TProtectedRoute = {
+  children?: ReactNode;
+  path: string;
+  exact?: boolean;
+}
+
+const ProtectedRoute: FC<TProtectedRoute> = ({ children, ...rest }) => {
   const user = useSelector(
     state => state.user
   )
@@ -28,4 +35,6 @@ export function ProtectedRoute({ children, ...rest }) {
       }
     />
   );
-} 
+}
+
+export default ProtectedRoute;

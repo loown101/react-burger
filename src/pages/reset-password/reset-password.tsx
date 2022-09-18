@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ResetPasswordStyle from './reset-password.module.css';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { resetPassword } from '../../services/actions/password'
 
 function ResetPasswordPage() {
@@ -22,14 +22,18 @@ function ResetPasswordPage() {
 
   const [valuePassword, setValuePassword] = React.useState('')
   const [valueCode, setValueCode] = React.useState('')
-  const inputRef = React.useRef(null)
+
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    const current = inputRef.current as HTMLInputElement
+
+    setTimeout(() => current.focus(), 0)
     alert('Icon Click Callback')
   }
 
-  const sendForm = (e) => {
+  const sendForm = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(resetPassword(valuePassword, valueCode))

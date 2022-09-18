@@ -1,7 +1,7 @@
-import { checkResponce, url } from '../../utils/utils';
+import { checkResponse, url } from '../../utils/utils';
 import { getCookie } from '../../utils/cookies';
 import { RESET_FILLING } from './ingredient';
-import { TOrder } from '../types/data';
+import { TConstructor, TConstructorResponse, TOrder } from '../types/data';
 import { AppDispatch } from '../types/index';
 
 export const POST_ITEMS_REQUEST: 'POST_ITEMS_REQUEST' = 'POST_ITEMS_REQUEST';
@@ -16,7 +16,8 @@ export interface IPostItemRequest {
 
 export interface IPostItemSuccess {
   readonly type: typeof POST_ITEMS_SUCCESS;
-  items: Array<TOrder>;
+  items: Array<TConstructor>;
+  order: TOrder;
 }
 
 export interface IPostItemFailed {
@@ -47,12 +48,13 @@ export function saveOrder(data: Array<string>) {
       },
       body: JSON.stringify({ ingredients: data })
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TConstructorResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({
             type: POST_ITEMS_SUCCESS,
-            items: res
+            items: res.items,
+            order: res.order
           });
         }
       })

@@ -2,7 +2,7 @@ import {
   GET_ITEMS_FAILED,
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
-  //OPEN_MODAL_DETAILS,
+  OPEN_MODAL_DETAILS,
   CLOSE_MODAL_DETAILS,
   GET_BUNS,
   GET_FILLING,
@@ -21,6 +21,9 @@ type TIngredientState = {
   itemsRequest: boolean,
   itemsFailed: boolean,
 
+  idIngredient: string,
+  //ingredients: TIngredient | null,
+
   itemsFilling: Array<TIngredient>,
   id: string;
 }
@@ -32,7 +35,8 @@ const initialState: TIngredientState = {
   itemsRequest: false,
   itemsFailed: false,
 
-  //idIngredient: '',
+  idIngredient: '',
+  //ingredients: null,
 
   itemsFilling: [],
   id: '',
@@ -103,16 +107,16 @@ export const ingredientReducer = (state = initialState, action: TIngridientActio
         itemsFilling: [],
       };
     }
-    // case OPEN_MODAL_DETAILS: {
-    //   return {
-    //     ...state,
-    //     idIngredient: action.idIngredient,
-    //   };
-    // }
+    case OPEN_MODAL_DETAILS: {
+      return {
+        ...state,
+        idIngredient: action.idIngredient,
+      };
+    }
     case CLOSE_MODAL_DETAILS: {
       return {
         ...state,
-        //ingredients: {},
+        //ingredients: [],
         items: [],
       };
     }

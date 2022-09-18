@@ -10,7 +10,7 @@ import {
 import { TWsOrder } from '../types/data'
 
 type TWsState = {
-  orders: TWsOrder | null,
+  orders: TWsOrder[] | null,
   total: number | null,
   totalToday: number | null,
   //error: null,

@@ -1,5 +1,5 @@
-import { checkResponce, url } from '../../utils/utils'
-import { TIngredient } from '../types/data';
+import { checkResponse, url } from '../../utils/utils'
+import { TIngredient, TIngredientResponse } from '../types/data';
 import { AppDispatch } from '../types/index';
 
 export const GET_ITEMS_REQUEST: 'GET_ITEMS_REQUEST' = 'GET_ITEMS_REQUEST';
@@ -54,12 +54,13 @@ export interface IResetFilling {
 
 export interface ICloseModal {
   readonly type: typeof CLOSE_MODAL_DETAILS;
-  //ingredients: null;
+  //ingredients: {};
 }
 
-// export interface IOpenModal {
-//   readonly type: typeof OPEN_MODAL_DETAILS;
-// }
+export interface IOpenModal {
+  readonly type: typeof OPEN_MODAL_DETAILS;
+  idIngredient: string;
+}
 
 export type TIngridientActions =
   | IGetItemsRequest
@@ -70,17 +71,21 @@ export type TIngridientActions =
   | IReorderFilling
   | IDeleteFilling
   | IResetFilling
-  | ICloseModal;
-// | IOpenModal;
+  | ICloseModal
+  | IOpenModal;
 
 
 export function getIngredients() {
+  console.log('get')
+
   return function (dispatch: AppDispatch) {
+    console.log('get2')
+
     dispatch({
       type: GET_ITEMS_REQUEST
     });
     fetch(`${url}ingredients`)
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TIngredientResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({
@@ -97,14 +102,14 @@ export function getIngredients() {
   };
 }
 
-// export function openModalDetails(ingredient: TIngredient) {
-//   return function (dispatch: AppDispatch) {
-//     dispatch({
-//       type: OPEN_MODAL_DETAILS,
-//       idIngredient: ingredient,
-//     });
-//   }
-// }
+export function openModalDetails(ingredient: string) {
+  return function (dispatch: AppDispatch) {
+    dispatch({
+      type: OPEN_MODAL_DETAILS,
+      idIngredient: ingredient,
+    });
+  }
+}
 
 export function closeModalDetails() {
   return function (dispatch: AppDispatch) {

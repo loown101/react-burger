@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
 import IngredientsCategory from '../IngredientCategory/IngredientCategory';
-import { useSelector } from 'react-redux';
-
+import { useSelector } from '../../services/hooks';
+import { composeWithDevTools } from '@reduxjs/toolkit/dist/devtoolsExtension';
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState('bun');
@@ -12,24 +12,28 @@ const BurgerIngredients = () => {
     state => state.ingredient.items
   );
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
+
     setCurrent(tab);
+
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  let timerId = null;
+  let timerId: any = null;
 
-  const onScrollTab = (e) => {
+  const onScrollTab = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+
     if (timerId !== null) {
       clearTimeout(timerId)
     }
 
     timerId = setTimeout(() => {
-      [...e.target.children].map((element) => {
-        if (e.target.scrollTop >= element.offsetTop) {
-          setCurrent(element.id);
-        }
+      [...target.children].map((element) => {
+        // if (target.scrollTop >= element.offsetTop) {
+        //   setCurrent(element.id);
+        // }
       })
     }, 10)
   }

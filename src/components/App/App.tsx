@@ -8,10 +8,11 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderFeedId from '../OrderFeedId/OrderFeedId';
 import OrderHistoryId from '../OrderFeedId/OrderHistoryId';
 import { getIngredients } from '../../services/actions/ingredient';
-import { ProtectedRoute } from '../ProtectedRoute';
+import ProtectedRoute from '../ProtectedRoute';
 import { closeModalDetails } from '../../services/actions/ingredient';
 import { getUser, token } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookies';
+import { TLocation } from '../../services/types/data'
 import {
   ForgotPasswordPage,
   HomePage,
@@ -27,30 +28,22 @@ import {
   NotFound404
 } from '../../pages';
 
+declare module "react" {
+  interface FunctionComponent<P = {}> {
+    (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+  }
+}
+
 function App() {
   const dispatch = useDispatch();
   const location = useLocation<TLocation>();
-  const history = useHistory();
+  const history = useHistory<TLocation>();
 
   const user = useSelector(
     state => {
       return state.user
     }
   )
-
-  type TLocation = {
-    from: string;
-    state?: object;
-    background: TBackground;
-  }
-
-  type TBackground = {
-    pathname: string;
-    search: string;
-    hash: string;
-    state: null;
-    key: string;
-  }
 
   const background = location.state?.background;
 
@@ -131,7 +124,7 @@ function App() {
       </Switch>
       {
         background && (
-          <>
+          <div>
             <Route path='/ingredients/:id' exact>
               {<Modal
                 title="Детали ингредиента"
@@ -153,7 +146,7 @@ function App() {
                 <OrderHistoryId />
               </Modal>}
             </ProtectedRoute>
-          </>
+          </div>
         )
       }
     </div>

@@ -21,7 +21,7 @@ export interface IWsClose {
 
 export interface IWsMessage {
   readonly type: typeof WS_MESSAGE;
-  payload: { orders: TWsOrder, total: number, totalToday: number };
+  payload: { orders: TWsOrder[], total: number, totalToday: number };
 }
 
 export interface IWsError {

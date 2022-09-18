@@ -2,13 +2,14 @@ import React from 'react';
 import { Button, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import RegisterStyle from './register.module.css';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { register } from '../../services/actions/auth'
 import { useLocation, Redirect } from 'react-router-dom';
+import { TLocation } from '../../services/types/data'
 
 function RegisterPage() {
   const dispatch = useDispatch()
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   const user = useSelector(
     state => {
@@ -18,20 +19,25 @@ function RegisterPage() {
 
   const [valuePassword, setValuePassword] = React.useState('')
 
-  const onChange = e => {
-    setValuePassword(e.target.value)
+  const onChange = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLInputElement;
+
+    setValuePassword(target.value)
   }
 
   const [valueName, setValueName] = React.useState('')
   const [valueEmail, setValueEmail] = React.useState('')
-  const inputRef = React.useRef(null)
+
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    const current = inputRef.current as HTMLInputElement
+
+    setTimeout(() => current.focus(), 0)
     alert('Icon Click Callback')
   }
 
-  const submitForm = (e) => {
+  const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(register(valueEmail, valuePassword, valueName))

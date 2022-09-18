@@ -6,7 +6,6 @@ import IngredientCategoryItem from './IngredientCategoryItem/IngredientCategoryI
 
 
 const IngredientsCategory = (props) => {
-
   const ingredients = useSelector(
     state => state.ingredient.items
   );

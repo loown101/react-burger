@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
 import IngredientCategoryItemStyles from './IngredientCategoryItem.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector } from '../../../services/hooks';
 import { Link, useLocation } from 'react-router-dom';
-//import { TIngredient } from '../../../services/types/data';
+import { TIngredient, TLocation } from '../../../services/types/data'
 
-const IngredientCategoryItem = (ingredient) => {
+type TIngredientCategoryItem = {
+  ingredient: TIngredient
+}
+
+const IngredientCategoryItem: FC<TIngredientCategoryItem> = ({ ingredient }) => {
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
 
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   let counter = [...fillings];
 
@@ -32,7 +35,6 @@ const IngredientCategoryItem = (ingredient) => {
     })
   });
 
-
   return (
     <Link className={`${IngredientCategoryItemStyles.link}`} to={{ pathname: `/ingredients/${ingredient._id}`, state: { background: location } }}>
       <li className={`${IngredientCategoryItemStyles.item} pb-8`} style={{ opacity }}>
@@ -51,9 +53,5 @@ const IngredientCategoryItem = (ingredient) => {
     </Link>
   )
 }
-
-IngredientCategoryItem.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-};
 
 export default IngredientCategoryItem;

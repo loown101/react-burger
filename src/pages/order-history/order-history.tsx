@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { logout } from '../../services/actions/auth';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,18 +7,19 @@ import orderStyles from './order-history.module.css';
 import { getCookie } from '../../utils/cookies';
 import { WS_INIT, WS_CLOSE, WS_CLEAR_STORE } from '../../services/action-types/wsActionTypes';
 import { totalPrice } from '../../utils/utils';
+import { TLocation } from '../../services/types/data'
 import dayjs from 'dayjs';
 
 function OrderHistoryPage() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   const ingredients = useSelector(
     state => state.ingredient.items
   );
 
-  const logoutProfile = (e) => {
+  const logoutProfile = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(logout())

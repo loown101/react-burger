@@ -3,33 +3,35 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import ProfileStyle from './profile.module.css';
 import { Link, useHistory } from 'react-router-dom';
 import { logout, editUser } from '../../services/actions/auth'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 function ProfilePage() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const user = useSelector(
+  const { user } = useSelector(
     state => {
-      return state.user.user
+      return state.user
     }
   )
 
-  const [valueEmail, setValueEmail] = React.useState(user.email)
-  const [valueName, setValueName] = React.useState(user.name)
-  const [valuePassword, setValuePassword] = React.useState('')
-  const [disabledPassword, setDisabledPassword] = React.useState(false)
-  const [disabledName, setDisabledName] = React.useState(false)
-  const [disabledEmail, setDisabledEmail] = React.useState(false)
+  const [valueEmail, setValueEmail] = React.useState<string>('')
+  const [valueName, setValueName] = React.useState<string>('')
+  const [valuePassword, setValuePassword] = React.useState<string>('')
+  const [disabledPassword, setDisabledPassword] = React.useState<boolean>(false)
+  const [disabledName, setDisabledName] = React.useState<boolean>(false)
+  const [disabledEmail, setDisabledEmail] = React.useState<boolean>(false)
 
-  const inputRef = React.useRef(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
 
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    const current = inputRef.current as HTMLInputElement
+
+    setTimeout(() => current.focus(), 0)
     setDisabledPassword(!disabledPassword)
   }
 
-  const logoutProfile = (e) => {
+  const logoutProfile = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(logout())
@@ -44,7 +46,7 @@ function ProfilePage() {
     });
   }
 
-  const saveProfile = (e) => {
+  const saveProfile = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     dispatch(editUser(valueName, valueEmail, valuePassword))
@@ -53,16 +55,32 @@ function ProfilePage() {
     setDisabledEmail(false);
   }
 
-  const resetForm = (e) => {
+  const resetForm = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    setValueEmail(user.email);
-    setValueName(user.name);
-    setValuePassword('');
-    setDisabledPassword(false);
-    setDisabledName(false);
-    setDisabledEmail(false);
+    if (user) {
+      setValueEmail(user?.email);
+      setValueName(user?.name);
+      setValuePassword('');
+      setDisabledPassword(false);
+      setDisabledName(false);
+      setDisabledEmail(false);
+    }
   }
+
+  React.useEffect(
+    () => {
+      if (user) {
+        setValueEmail(user?.email);
+        setValueName(user?.name);
+        setValuePassword('');
+        setDisabledPassword(false);
+        setDisabledName(false);
+        setDisabledEmail(false);
+      }
+    },
+    [user]
+  );
 
   return (
     <section className={`${ProfileStyle.container} mt-20`}>

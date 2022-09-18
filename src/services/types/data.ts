@@ -1,3 +1,30 @@
+export type TAuthResponse = {
+  success: boolean;
+
+  refreshToken: string;
+  accessToken: string;
+  user: TUser;
+};
+
+export type TIngredientResponse = {
+  success: boolean;
+
+  data: Array<TIngredient>;
+};
+
+export type TConstructorResponse = {
+  success: boolean;
+
+  items: Array<TConstructor>;
+  order: TOrder;
+};
+
+export type TPasswordResponse = {
+  success: boolean;
+
+  message: string;
+};
+
 export type TIngredient = {
   calories: number;
   carbohydrates: number;
@@ -19,6 +46,13 @@ export type TAuth = {
   readonly email: string;
   readonly name: string;
   readonly updatedAt: string;
+}
+
+export type TConstructor = {
+  name: string;
+  order: TOrder;
+
+  success: boolean;
 }
 
 export type TOrder = {
@@ -48,3 +82,18 @@ export type TWsOrder = {
   updatedAt: string;
   _id: string;
 }
+
+export type TLocation = {
+  from?: string;
+  state?: object;
+  background?: TBackground;
+}
+
+export type TBackground = {
+  pathname: string;
+  search: string;
+  hash: string;
+  state: null;
+  key: string;
+}
+

@@ -1,5 +1,6 @@
-import { checkResponce, url } from '../../utils/utils'
+import { checkResponse, url } from '../../utils/utils'
 import { AppDispatch } from '../types/index';
+import { TPasswordResponse } from '../types/data'
 
 export const PASSWORD_RESET_REQUEST: 'PASSWORD_RESET_REQUEST' = 'PASSWORD_RESET_REQUEST';
 export const PASSWORD_RESET_SUCCESS: 'PASSWORD_RESET_SUCCESS' = 'PASSWORD_RESET_SUCCESS';
@@ -55,7 +56,7 @@ export function forgotPassword(email: string) {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TPasswordResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({
@@ -87,7 +88,7 @@ export function resetPassword(password: string, token: string) {
         }
       )
     })
-      .then((res) => checkResponce(res))
+      .then((res) => checkResponse<TPasswordResponse>(res))
       .then(res => {
         if (res && res.success) {
           dispatch({

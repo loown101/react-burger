@@ -1,25 +1,35 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './BurgerConstructor.module.css';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { saveOrder, closeModalOrder } from '../../services/actions/constructor';
 import { useDrop } from 'react-dnd';
 import { GET_BUNS, GET_FILLING, DELETE_FILLING } from '../../services/actions/ingredient';
 import { countBuns } from '../../utils/utils';
 import BurgerConstructorOrder from './BurgerConstructorOrder/BurgerConstructorOrder';
 import { useLocation, Redirect } from 'react-router-dom';
+import { TIngredient, TLocation } from '../../services/types/data';
 
-const BurgerConstructor = ({ type }) => {
+type TBurgerConstructor = {
+  type: string,
+}
+
+type TItem = {
+  ingredient: TIngredient,
+}
+
+
+const BurgerConstructor: FC<TBurgerConstructor> = ({ type }) => {
   const { v4: uuidv4 } = require('uuid');
 
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
-  const [orderState, setOrderState] = useState(false)
+  const [orderState, seTConstructorState] = useState(false)
 
   const buns = useSelector(state => state.ingredient.itemsBun);
   const fillings = useSelector(state => state.ingredient.itemsFilling);
@@ -35,7 +45,7 @@ const BurgerConstructor = ({ type }) => {
   const handleOrderClick = useCallback(
     () => {
       if (!user.user) {
-        setOrderState(true)
+        seTConstructorState(true)
 
         return;
       }
@@ -54,7 +64,7 @@ const BurgerConstructor = ({ type }) => {
     [user.user, fillings, buns, dispatch]
   );
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = (id: number) => {
     dispatch({
       type: DELETE_FILLING,
       id: id,
@@ -69,7 +79,7 @@ const BurgerConstructor = ({ type }) => {
     [dispatch]
   );
 
-  const getFillingList = (fillings) => {
+  const getFillingList = (fillings: Array<TIngredient>) => {
     return (
       <ul className={`${burgerConstructorStyles.list} `}>
         {fillings.map((filling, index) =>
@@ -87,12 +97,12 @@ const BurgerConstructor = ({ type }) => {
     )
   }
 
-  const calcSum = (fillings) => {
+  const calcSum = (fillings: Array<TIngredient>) => {
     let total = fillings.reduce((acc, { price }) => acc + price, ((!buns) ? 0 : buns.price) * countBuns);
     return total;
   }
 
-  const [{ isHover }, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop<TItem>({
     accept: 'newIngridient',
     collect: monitor => ({
       isHover: monitor.isOver() ? 'indigo' : 'transparent',
@@ -114,7 +124,7 @@ const BurgerConstructor = ({ type }) => {
 
   return (
     <section className={`${burgerConstructorStyles.burgerConstructor} mt-25`} >
-      <div ref={dropTarget} style={{ isHover }}>
+      <div ref={dropTarget}>
         {(!buns) ? (<div className={`${burgerConstructorStyles.boxIngredient} ${burgerConstructorStyles.boxIngredientBuns} ml-8 pb-4 mb-4`}>Перенесите булочку</div>) :
           (<div className={`${burgerConstructorStyles.boxIngredient} ml-8 pb-4`}>
             <ConstructorElement

@@ -1,7 +1,11 @@
 import React from 'react';
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
+
+type TParams = {
+  id?: string;
+}
 
 const IngredientDetails = () => {
   const ingredients = useSelector(
@@ -10,7 +14,7 @@ const IngredientDetails = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id } = useParams<TParams>();
 
   const activeIngredient = ingredients.find((ingredient) => ingredient._id === id)
 

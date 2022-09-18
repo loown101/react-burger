@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import feedStyles from './order-feed.module.css';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { WS_INIT, WS_CLOSE, WS_CLEAR_STORE } from '../../services/action-types/wsActionTypes';
 import { totalPrice } from '../../utils/utils';
+import { useDispatch, useSelector } from '../../services/hooks';
+import { TLocation } from '../../services/types/data'
 import dayjs from 'dayjs';
 
 function OrderFeedPage() {
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const dispatch = useDispatch();
 
   const { orders, total, totalToday } = useSelector(state => state.ws)

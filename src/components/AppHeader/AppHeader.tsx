@@ -2,10 +2,10 @@ import React from 'react';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import headerStyles from './AppHeader.module.css';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-
+import { TLocation } from '../../services/types/data'
 
 const AppHeader = () => {
-  const location = useLocation();
+  const location = useLocation<TLocation>();
 
   return (
     <header className={`${headerStyles.header}`} >
