@@ -1,5 +1,6 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC, useCallback, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './BurgerConstructor.module.css';
@@ -168,7 +169,7 @@ const BurgerConstructor: FC<TBurgerConstructor> = ({ type }) => {
           title=""
           onClose={closeModal}
         >
-          <OrderDetails onClose={closeModal} />
+          <OrderDetails />
         </Modal>
       }
       {orderState &&

@@ -4,7 +4,6 @@ import okImage from '../../images/graphics.png';
 import { useSelector } from '../../services/hooks';
 
 const OrderDetails = () => {
-
   const { order } = useSelector(
     state => state.constructor
   );

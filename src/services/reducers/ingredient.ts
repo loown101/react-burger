@@ -22,7 +22,6 @@ type TIngredientState = {
   itemsFailed: boolean,
 
   idIngredient: string,
-  //ingredients: TIngredient | null,
 
   itemsFilling: Array<TIngredient>,
   id: string;
@@ -36,7 +35,6 @@ const initialState: TIngredientState = {
   itemsFailed: false,
 
   idIngredient: '',
-  //ingredients: null,
 
   itemsFilling: [],
   id: '',
@@ -51,8 +49,6 @@ export const ingredientReducer = (state = initialState, action: TIngridientActio
       };
     }
     case GET_ITEMS_SUCCESS: {
-      console.log('ssdfsd', action.items)
-
       return {
         ...state,
         itemsFailed: false,
@@ -116,8 +112,6 @@ export const ingredientReducer = (state = initialState, action: TIngridientActio
     case CLOSE_MODAL_DETAILS: {
       return {
         ...state,
-        //ingredients: [],
-        items: [],
       };
     }
     default: {

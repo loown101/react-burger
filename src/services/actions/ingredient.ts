@@ -54,7 +54,6 @@ export interface IResetFilling {
 
 export interface ICloseModal {
   readonly type: typeof CLOSE_MODAL_DETAILS;
-  //ingredients: {};
 }
 
 export interface IOpenModal {
@@ -115,8 +114,6 @@ export function closeModalDetails() {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: CLOSE_MODAL_DETAILS,
-      //ingredients: {},
-      //ingredients: null,
     });
   }
 }

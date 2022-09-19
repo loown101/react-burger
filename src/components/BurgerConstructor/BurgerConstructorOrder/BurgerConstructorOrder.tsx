@@ -9,8 +9,8 @@ import { TIngredient } from '../../../services/types/data'
 type TBurgerConstructorOrder = {
   filling: TIngredient,
   index: number,
-  handleDeleteClick: (fillingId: number) => number,
-  id: string,
+  handleDeleteClick: (id: number) => void,
+  id: number,
 }
 
 type TItem = {

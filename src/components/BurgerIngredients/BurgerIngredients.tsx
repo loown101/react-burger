@@ -3,7 +3,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerIngredientsStyles from './BurgerIngredients.module.css';
 import IngredientsCategory from '../IngredientCategory/IngredientCategory';
 import { useSelector } from '../../services/hooks';
-import { composeWithDevTools } from '@reduxjs/toolkit/dist/devtoolsExtension';
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState('bun');
@@ -30,10 +29,13 @@ const BurgerIngredients = () => {
     }
 
     timerId = setTimeout(() => {
-      [...target.children].map((element) => {
-        // if (target.scrollTop >= element.offsetTop) {
-        //   setCurrent(element.id);
-        // }
+      // eslint-disable-next-line array-callback-return
+      [...target.children].map((element): void => {
+        if (element instanceof HTMLElement) {
+          if (target.scrollTop >= element.offsetTop) {
+            setCurrent(element.id);
+          }
+        }
       })
     }, 10)
   }
