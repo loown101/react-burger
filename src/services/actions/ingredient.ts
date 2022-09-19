@@ -75,11 +75,7 @@ export type TIngridientActions =
 
 
 export function getIngredients() {
-  console.log('get')
-
   return function (dispatch: AppDispatch) {
-    console.log('get2')
-
     dispatch({
       type: GET_ITEMS_REQUEST
     });
