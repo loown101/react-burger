@@ -1,16 +1,20 @@
 import React from 'react';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import IngredientCategoryItem from './IngredientCategoryItem/IngredientCategoryItem'
 
+type TIngredientsCategory = {
+  name: string;
+  type: "bun" | "main" | "sauce";
+  id: string;
+}
 
-const IngredientsCategory = (props) => {
+const IngredientsCategory = (props: TIngredientsCategory) => {
   const ingredients = useSelector(
     state => state.ingredient.items
   );
 
-  const getIngredients = (type) => {
+  const getIngredients = (type: string) => {
     return (
       <ul className={`${IngredientCategoryStyles.listBox}`}>
         {
@@ -32,11 +36,5 @@ const IngredientsCategory = (props) => {
 
   )
 }
-
-IngredientsCategory.propTypes = {
-  id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
 
 export default IngredientsCategory;
