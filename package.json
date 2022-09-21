@@ -11,6 +11,7 @@
     "@types/node": "^16.11.35",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "@types/uuid": "^8.3.4",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
     "create-react-app": "^5.0.1",
     "css-loader": "^6.7.1",
