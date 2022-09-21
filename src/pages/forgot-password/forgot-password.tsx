@@ -29,7 +29,7 @@ function ForgotPasswordPage() {
     setTimeout(() => current.focus(), 0)
   }
 
-  const saveProfile = (e: React.SyntheticEvent) => {
+  const saveProfile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     dispatch(forgotPassword(valueEmail))
@@ -57,7 +57,7 @@ function ForgotPasswordPage() {
           <Input
             type={'email'}
             placeholder={'Укажите e-mail'}
-            onChange={e => setValueEmail(e.target.value)}
+            onChange={(e) => setValueEmail(e.target.value)}
             value={valueEmail}
             name={'email'}
             error={false}

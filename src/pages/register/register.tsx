@@ -19,10 +19,8 @@ function RegisterPage() {
 
   const [valuePassword, setValuePassword] = React.useState('')
 
-  const onChange = (e: React.SyntheticEvent) => {
-    const target = e.target as HTMLInputElement;
-
-    setValuePassword(target.value)
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValuePassword(e.target.value)
   }
 
   const [valueName, setValueName] = React.useState('')
@@ -37,7 +35,7 @@ function RegisterPage() {
     alert('Icon Click Callback')
   }
 
-  const submitForm = (e: React.SyntheticEvent) => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     dispatch(register(valueEmail, valuePassword, valueName))

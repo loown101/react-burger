@@ -2,7 +2,7 @@ import React, { useRef, FC } from 'react';
 import burgerConstructorOrderStyles from './BurgerConstructorOrder.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../services/hooks';
 import { REORDER_FILLING } from '../../../services/actions/ingredient';
 import { TIngredient } from '../../../services/types/data'
 

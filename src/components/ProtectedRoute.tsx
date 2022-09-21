@@ -1,12 +1,10 @@
 import { ReactNode, FC } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { useSelector } from '../services/hooks';
 
 type TProtectedRoute = {
   children?: ReactNode;
-  path: string;
-  exact?: boolean;
-}
+} & RouteProps
 
 const ProtectedRoute: FC<TProtectedRoute> = ({ children, ...rest }) => {
   const user = useSelector(

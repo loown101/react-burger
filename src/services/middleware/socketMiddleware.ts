@@ -4,8 +4,7 @@ import { AppDispatch, RootState } from '../types/index';
 import { TWsActions } from "../action-types/wsActionTypes";
 
 export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middleware => {
-  return (store) => {
-
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
     const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
 
@@ -15,10 +14,6 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middlewa
       if (type === wsInit) {
         socket = new WebSocket(`${wsUrl}${payload}`);
       }
-
-      // if (type === onClose) {
-      //   socket.close();
-      // }
 
       if (socket) {
         socket.onopen = (event) => {

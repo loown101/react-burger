@@ -19,10 +19,10 @@ const BurgerIngredients = () => {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  let timerId: any = null;
+  let timerId: NodeJS.Timeout | null = null;
 
-  const onScrollTab = (e: React.SyntheticEvent) => {
-    const target = e.target as HTMLInputElement;
+  const onScrollTab: React.UIEventHandler<HTMLUListElement> = (e) => {
+    const target = e.currentTarget;
 
     if (timerId !== null) {
       clearTimeout(timerId)

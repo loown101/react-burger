@@ -33,7 +33,7 @@ function ResetPasswordPage() {
     alert('Icon Click Callback')
   }
 
-  const sendForm = (e: React.SyntheticEvent) => {
+  const sendForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     dispatch(resetPassword(valuePassword, valueCode))

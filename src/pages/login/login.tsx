@@ -19,10 +19,8 @@ function LoginPage() {
     }
   )
 
-  const onChange = (e: React.SyntheticEvent) => {
-    const target = e.target as HTMLInputElement;
-
-    setValuePassword(target.value)
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValuePassword(e.target.value)
   }
 
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -34,7 +32,7 @@ function LoginPage() {
     alert('Icon Click Callback')
   }
 
-  const submitForm = (e: React.SyntheticEvent) => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     dispatch(login(valueEmail, valuePassword))
